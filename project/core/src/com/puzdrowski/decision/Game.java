@@ -21,6 +21,7 @@ public class Game extends ApplicationAdapter {
 	public void create () {
 		Gdx.input.setInputProcessor(new InputProcessor());
 		Gdx.graphics.setDisplayMode(WIDTH, HEIGHT, false);
+		Metrics.init(); // Let's do this before loading the world just for safety.
 		world = new GameWorld(this);
 	}
 

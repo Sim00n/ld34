@@ -92,7 +92,7 @@ public class GameWorld {
 	}
 	
 	private void startRolling() {
-		if(rollingTimer <= 0) {
+		if(rollingTimer <= 0 && !rolling) {
 			rolling = true;
 			rollingSpeed = 500.0f;
 			rollingDamping = -3.0f;
@@ -108,12 +108,8 @@ public class GameWorld {
 		button_hover[2] = (mX > Game.WIDTH - 164 && mX < Game.WIDTH && mY > Game.HEIGHT/1.6f && mY < Game.HEIGHT/1.6f + 164);
 		button_hover[3] = (mX > Game.WIDTH - 165 && mX < Game.WIDTH && mY > 0 && mY < 164);
 		
-		for(int i = 0; i < button_hover.length; i++) {
-			if(button_hover[i]) {
-				if(Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
-					startRolling();
-				}
-			}
+		if(button_hover[0] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
+			startRolling();
 		}
 	}
 	
@@ -175,6 +171,8 @@ public class GameWorld {
 		font.draw(batch, "Help", Game.WIDTH - 164 + 164/2.50f, 164/1.70f);
 		
 		batch.end();
+		
+		Metrics.render(batch);
 		
 		/*switch(screen) {
 		case GAME:

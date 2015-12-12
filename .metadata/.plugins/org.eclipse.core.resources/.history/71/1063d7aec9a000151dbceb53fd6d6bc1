@@ -1,0 +1,30 @@
+package com.puzdrowski.decision;
+
+public class Metrics {
+
+	static {
+	 	/*- 1 Health
+	 	- 2 Food/Water Availability
+	 	- 3 Technology
+	 	- 4 Environmental Quality
+	 	- 5 Space exploration?
+	 	- 6 Drug trafficking
+	 	- 7 Education
+	 	- 8 Jobs
+	 	- 9 Infrastructure
+	 	- 10 Vodka
+	 	- 11 Internet Access
+	 	- 12 Energy production
+	 	- 13 Rule of law / Crime Rate
+	 	- 14 World Peace
+	 	- 15 ??????????*/
+		
+		int HEALTH;
+		
+	};
+	
+	public static init() {
+		
+	}
+	
+}

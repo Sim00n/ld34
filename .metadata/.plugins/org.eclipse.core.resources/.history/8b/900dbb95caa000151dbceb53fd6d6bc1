@@ -1,0 +1,54 @@
+package com.puzdrowski.decision;
+
+public class Metrics {
+	 	/*- 1 Health
+	 	- 2 Food/Water Availability
+	 	- 3 Technology
+	 	- 4 Environmental Quality
+	 	- 5 Space exploration?
+	 	- 6 Drug trafficking
+	 	- 7 Education
+	 	- 8 Jobs
+	 	- 9 Infrastructure
+	 	- 10 Vodka
+	 	- 11 Internet Access
+	 	- 12 Energy production
+	 	- 13 Rule of law / Crime Rate
+	 	- 14 World Peace
+	 	- 15 ??????????*/
+		
+	public static int HEALTH;
+	public static int FOOD;
+	public static int TECH;
+	public static int ENV;
+	public static int SPACE;
+	public static int DRUG;
+	public static int EDUCATION;
+	public static int JOBS;
+	public static int INFRASTRUCTURE;
+	public static int VODKA;
+	public static int WIFI;
+	public static int ENERGY;
+	public static int LAW;
+	public static int PEACE;
+	public static int LOVE;
+	
+	public static void init() {
+		Metrics.HEALTH = 44 + (int) (Math.random() * 10 - 5);
+		Metrics.FOOD = 71 + (int) (Math.random() * 4 - 2);
+		Metrics.TECH = 54 + (int) (Math.random() * 10 - 5);
+		Metrics.ENV = 33 + (int) (Math.random() * 10 - 5);
+		Metrics.SPACE = 12 + (int) (Math.random() * 20 - 10);
+		Metrics.DRUG = 58 + (int) (Math.random() * 10 - 5);
+		Metrics.EDUCATION = 45 + (int) (Math.random() * 10 - 5);
+		Metrics.JOBS = 81 + (int) (Math.random() * 10 - 5);
+		Metrics.INFRASTRUCTURE = 20 + (int) (Math.random() * 10 - 5);
+		Metrics.VODKA = 50 + (int) (Math.random() * 30 - 15);
+		Metrics.WIFI = 67 + (int) (Math.random() * 10 - 5);
+		Metrics.ENERGY = 60 + (int) (Math.random() * 10 - 5);
+		Metrics.LAW = 64 + (int) (Math.random() * 10 - 5);
+		Metrics.PEACE = 80 + (int) (Math.random() * 20 - 10);
+		Metrics.LOVE = 55 + (int) (Math.random() * 20 - 10);
+	}
+	
+}

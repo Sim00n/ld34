@@ -1820,3 +1820,6 @@ java.lang.ClassNotFoundException: org.eclipse.wst.common.componentcore.Component
 
 !ENTRY org.springsource.ide.eclipse.gradle.core 4 0 2015-12-12 05:41:50.317
 !MESSAGE Couldn't launch Decision-desktop because no tasks have been selected
+
+!ENTRY org.springsource.ide.eclipse.gradle.core 4 0 2015-12-12 06:40:53.339
+!MESSAGE Couldn't launch Decision-desktop because no tasks have been selected
