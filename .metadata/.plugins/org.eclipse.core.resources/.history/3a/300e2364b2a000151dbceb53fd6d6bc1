@@ -1,0 +1,119 @@
+package com.puzdrowski.decision;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.puzdrowski.decision.stages.GameStage;
+
+public class GameWorld {
+
+	private Game game;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
+	private BitmapFont font;
+
+	private GameStage gameStage;
+
+	private Texture txt_background;
+	private Texture board;
+	private Texture button_test;
+	private Texture button_test2;
+	
+	private enum SCREEN {WELCOME, GAME, PAUSE, EXIT};
+	private SCREEN screen;
+	
+	float rollingSpeed = 0.0f;
+	float rollingDumping = 0.0f;
+	float rollingTimer = 0.0f;
+	
+	public GameWorld(Game game) {
+		this.game = game;
+		initialize();
+	}
+	
+	private void initialize() {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Game.WIDTH, Game.HEIGHT);
+		batch = new SpriteBatch();
+		font = new BitmapFont();
+		
+		gameStage = new GameStage(this.game);
+		screen = SCREEN.GAME;
+		
+		txt_background = new Texture(Gdx.files.internal("textures/background_big.png"));
+		board = new Texture(Gdx.files.internal("textures/board.png"));
+		button_test = new Texture(Gdx.files.internal("textures/button.png"));
+		button_test2 = new Texture(Gdx.files.internal("textures/button_pressed.png"));
+	}
+	
+	public void update(float tick) {
+		switch(screen) {
+		case GAME:
+			gameStage.update(tick);
+		break;
+		default:
+		break;		
+		}
+		
+		test += 0.9;
+		if(test > 360)
+			test = 0;
+	}
+	
+	public void render() {
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+		
+		batch.begin();
+		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
+		batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
+				
+		float theta = 360f/22f;
+		
+		for(int i = 0; i < 22; i++) {
+			int x = (int) (Game.WIDTH/2 + Math.cos(Math.toRadians(theta * i - test)) * 550);
+			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - test)) * 280);
+			
+			batch.draw(button_test, x, y, 80, 80);
+			//font.draw(batch, x + ", " + y + ", " + theta*i, x, y);
+						
+		}
+		
+		theta = 360f/12f;
+		
+		for(int i = 0; i < 12; i++) {
+			int x = (int) (Game.WIDTH/2 + Math.cos(Math.toRadians(theta * i - test)) * 340);
+			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - test)) * 180);
+			
+			batch.draw(button_test, x, y, 80, 80);
+			//font.draw(batch, x + ", " + y + ", " + theta*i, x, y);
+						
+		}
+				
+		theta = 360f/6f;
+		
+		for(int i = 0; i < 6; i++) {
+			int x = (int) (Game.WIDTH/2 + Math.cos(Math.toRadians(theta * i - test)) * 130);
+			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - test)) * 100);
+			
+			batch.draw(button_test, x, y, 80, 80);
+			//font.draw(batch, x + ", " + y + ", " + theta*i, x, y);
+						
+		}
+		
+		batch.end();
+		
+		/*switch(screen) {
+		case GAME:
+			gameStage.render();
+		break;
+		default:
+		break;
+		}*/
+		
+	}	
+	
+}
+

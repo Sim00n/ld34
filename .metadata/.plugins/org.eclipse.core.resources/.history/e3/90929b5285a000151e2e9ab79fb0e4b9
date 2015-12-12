@@ -1,0 +1,26 @@
+package com.puzdrowski.decision;
+
+public class World {
+
+	private Game game;
+	
+	public World(Game game) {
+		this.game = game;
+		initialize();
+	}
+	
+	private void initialize() {
+	
+	}
+	
+	public void update(float TICK) {
+		
+	}
+	
+	public void draw() {
+		
+	}
+	
+	
+	
+}

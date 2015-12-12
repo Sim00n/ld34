@@ -1,0 +1,62 @@
+package com.puzdrowski.decision;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.puzdrowski.decision.stages.GameStage;
+
+public class GameWorld {
+
+	private Game game;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
+
+	private GameStage gameStage;
+
+	private Texture txt_background;
+	
+	private enum SCREEN {WELCOME, GAME, PAUSE, EXIT};
+	private SCREEN screen;
+	
+	public GameWorld(Game game) {
+		this.game = game;
+		initialize();
+	}
+	
+	private void initialize() {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Game.WIDTH, Game.HEIGHT);
+		batch = new SpriteBatch();
+		
+		gameStage = new GameStage(this.game);
+		screen = SCREEN.GAME;
+		
+		txt_background = new Texture(Gdx.files.internal("textures/background_big.png"));
+	}
+	
+	public void update(float tick) {
+		switch(screen) {
+		case GAME:
+			gameStage.update(tick);
+		break;
+		
+		default:
+		break;		
+		}
+	}
+	
+	public void render() {
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+		
+		batch.begin();
+		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
+		batch.end();
+	}
+	
+	public void resize(int width, int height) {}
+	
+	
+	
+}

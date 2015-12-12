@@ -1,0 +1,55 @@
+package com.puzdrowski.decision;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+public class GameWorld {
+
+	private Game game;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
+	private Viewport viewport;
+	
+	float temp1 =0f, temp2 =0f;
+		
+	private Texture txt_background;
+	
+	public GameWorld(Game game) {
+		this.game = game;
+		initialize();
+	}
+	
+	private void initialize() {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Game.WIDTH, Game.HEIGHT);
+		//viewport = new FitViewport(Game.WIDTH, Game.HEIGHT, camera);
+		batch = new SpriteBatch();
+		
+		txt_background = new Texture(Gdx.files.internal("textures/background_big.png"));
+	}
+	
+	public void update(float TICK) {
+		
+	}
+	
+	public void render() {
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+		
+		batch.begin();
+		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
+		batch.end();
+	}
+	
+	public void resize(int width, int height) { 
+		//camera.setToOrtho(false, temp1, temp2);
+		//viewport.update(width, height);
+	}
+	
+	
+	
+}

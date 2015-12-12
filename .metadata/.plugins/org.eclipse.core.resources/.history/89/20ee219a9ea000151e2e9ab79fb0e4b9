@@ -1,0 +1,51 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.puzdrowski.decision.Game;
+
+public class StageWrapper {
+
+	Game game;
+	Stage stage;
+	Skin skin;
+	Table table;
+	Texture text = new Texture(Gdx.files.internal("textures/background_small.png");
+	
+	public StageWrapper(Game game) {
+		this.game = game;
+		initialize();
+	}
+	
+	public void initialize() {
+		skin = new Skin(Gdx.files.internal("libgdx/uiskin.json"));
+		stage = new Stage();
+		skin.add("default", new BitmapFont());
+		
+		table = new Table();
+		table.setFillParent(true);
+		stage.addActor(table);	
+	}
+	
+	public void elements() {}
+	
+	public void render() {
+		stage.draw();
+		stage.getBatch().begin();
+		stage.getBatch().draw(text), 0, 0);
+		stage.getBatch().end();
+	}
+	
+	public void update(float tick) {
+		stage.act(tick);
+	}
+	
+	public Stage getStage() {
+		return stage;
+	}
+	
+}

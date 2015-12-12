@@ -1,0 +1,23 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.puzdrowski.decision.Game;
+
+public class StageWrapper {
+
+	Game game;
+	Stage stage;
+	Skin skin;
+	Table table;
+	
+	public StageWrapper(Game game) {
+		this.game = game;
+		initialize();
+	}
+	
+	private void intialize() {
+		stage = new Stage();
+		
+	}
+	
+}

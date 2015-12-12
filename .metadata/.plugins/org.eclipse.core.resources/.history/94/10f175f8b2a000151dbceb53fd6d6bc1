@@ -1,0 +1,23 @@
+package com.puzdrowski.decision.input;
+
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Input.Keys;
+
+public class InputProcessor extends InputAdapter {
+	public boolean keyDown(int k) {
+		if(k == Keys.SPACE) {
+			Keyboard.setKey(Keyboard.ROLL, true);
+		}
+		
+		return true;
+	}
+	
+	public boolean keyUp(int k) {
+		if(k == Keys.SPACE) {
+			Keyboard.setKey(Keyboard.ROLL, false);
+		}
+		
+		return true;
+	}
+	
+}

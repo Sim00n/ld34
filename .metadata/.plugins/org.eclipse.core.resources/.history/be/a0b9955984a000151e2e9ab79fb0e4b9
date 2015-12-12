@@ -1,0 +1,7 @@
+package com.puzdrowski.decision.input;
+
+public class InputProcessor extends InputAdapter {
+
+	
+	
+}

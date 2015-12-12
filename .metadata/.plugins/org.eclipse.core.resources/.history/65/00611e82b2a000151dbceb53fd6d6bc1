@@ -1,0 +1,7 @@
+package com.puzdrowski.decision.input;
+
+import com.badlogic.gdx.InputAdapter;
+
+public class InputProcessor extends InputAdapter {
+	
+}
