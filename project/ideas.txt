@@ -1,0 +1,113 @@
+= ================================================== =
+= LudumDare 48 - LD34 planning    					 =
+= ================================================== =
+= Theme: Two button controls AND/OR growing 		 =
+=    PL: Dwuprzyciskowa kontrol i/lub rośniecie 	 =
+= ================================================== =
+= My goal: To learn LibGDX (again) 					 =
+= ================================================== =
+= Name: 				          					 =
+= ================================================== =
+
+Theme interpretation:
+- growing = expanding
+- growing = development
+- growing = spreading (kinda like a bacteria - think the game "Plague Inc." on iOS)
+- growing cities?
+- growing communities? maps? enemies? waves of enemies?
+-
+
+Final idea? maybe?
+- "Democracy 3" kind of controls
+- Each "tile" has 1 state = on/off (one button)
+- End goal: growing whatever you started with
+= World
+ - 
+
+
+Ideas:
+- 2D
+- Once screen, side scroll mechanics - kinds like space invaders?
+- some kind of clicker with a cool graphics theme?
+- some kind of building game as in growing a settlement or a city
+- two button control being yes/no as answers to questions? (text based game?)
+- tower defence (enemies growing in numbers/strength/speed/agility?)
+- so you want to be a millionaire? (two choices only)
+- two buttons to rewind time?
+- simple skill based game where you have to select a button in certain amount if time?
+
+Two button control:
+- two button: either keyboard, both mouse buttons or one of each
+- moving left and right to collect shit
+- there are always two buttons to use? choose from? find?
+
+Growing:
+- farming?
+- character growth
+- growing by collecting stuff?
+- taking care of a (marijuana) plant, giving it light, water, nutrients, etc.
+
+
+
+FINAL IDEA:
+- World in the center
+ - Metrics:
+ 	- 1 Health
+ 	- 2 Food/Water Availability
+ 	- 3 Technology
+ 	- 4 Environmental Quality
+ 	- 5 Space exploration?
+ 	- 6 Drug trafficking
+ 	- 7 Education
+ 	- 8 Jobs
+ 	- 9 Infrastructure
+ 	- 10 Vodka
+ 	- 11 Internet Access
+ 	- 12 Energy production
+ 	- 13 Rule of law / Crime Rate
+ 	- 14 World Peace
+ 	- 15 ??????????
+ - Minor properties:
+ 	- Population Growth
+ 	- Religious freedom
+ 	- Climate warming
+ 	- Militarization
+ 	- NASA
+ 	- Nuclear energy
+ 	- Quantum Computers
+ 	- Electric cars
+ 	- Vaccines
+ 	- STD prevention
+ 	- High Univeristy Cost
+ 	- Global police
+ 	- Industry Regulations
+ 	- Unated Nations
+ 	- Ban on alcohol
+ 	- Ban on drugs
+ 	- Medical Research
+ 	- Fishing Quotas
+ 	- Endangered Species Protection
+ 	- Freedom of Information
+ 	- Minimum Wage
+ 	- Geneva Convention
+ 	- Public Smoking Ban
+ 	- Conformity
+ 	- Diversity
+ 	- Gender Equality
+ 	- Marriage Equality
+ 	- Secreat CIA Prisons
+ 	- Global Population Tracking (chips in your neck?)
+ 	- CCTV cameras everywhere
+ 	- Income tax
+ 	- Alcohol tax
+ 	- Corporation tax
+ 	- Property tax
+ - Major properties (end game goal):
+ 	- Hunger/Thirst (-)
+ 	- Wars (-)
+ 	- Happiness (+)
+
+
+- Design:
+ Player changes minors to affect metrics which affect majors.
+ On/off minors => metrics => majors
