@@ -1,0 +1,7 @@
+package com.puzdrowski.decision.entity;
+
+public class FactorEntity extends Entity {
+
+	
+	
+}

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.puzdrowski.decision.entity.Entity.TYPE;
+import com.puzdrowski.decision.entity.FactorEntity;
 import com.puzdrowski.decision.input.Keyboard;
 import com.puzdrowski.decision.stages.GameStage;
 
@@ -24,12 +26,16 @@ public class GameWorld {
 	private enum SCREEN {WELCOME, GAME, PAUSE, EXIT};
 	private SCREEN screen;
 	
-	private float theta = 0.0f;
 	private boolean rolling = false;
 	private float rollingSpeed = 0.0f;
 	private float rollingDamping = 0.0f;
 	private float rollingTimer = 0.0f;
 	private static final float ROLLING_DAMPING_DAMPING= 0.995f;
+	
+	FactorEntity[] outer = new FactorEntity[22];
+	FactorEntity[] middle = new FactorEntity[12];
+	FactorEntity[] inner = new FactorEntity[6];
+	FactorEntity currentFactor;
 	
 	private boolean[] button_hover = new boolean[4];
 	
@@ -58,6 +64,24 @@ public class GameWorld {
 		for(int i = 0; i < button_hover.length; i++) {
 			button_hover[i] = false;
 		}
+		
+		float theta = 0.0f;
+		theta = 360f/22f;
+		for(int i = 0; i < 22; i++) {
+			outer[i] = new FactorEntity(button, 0, 0, theta, TYPE.OUTER, i);
+		}
+		
+		theta = 360f/12f;
+		for(int i = 0; i < 12; i++) {
+			middle[i] = new FactorEntity(button, 0, 0, theta, TYPE.MIDDLE, i);
+		}
+				
+		theta = 360f/6f;
+		for(int i = 0; i < 6; i++) {
+			inner[i] = new FactorEntity(button, 0, 0, theta, TYPE.INNER, i);
+		}
+		
+		endRolling();
 	}
 	
 	public void update(float tick) {
@@ -71,6 +95,7 @@ public class GameWorld {
 		
 		roll(tick);
 		buttons(tick);
+		factors(tick);
 	}
 	
 	private void roll(float tick) {
@@ -80,6 +105,7 @@ public class GameWorld {
 			if(rollingSpeed <= 15) {
 				rolling = false;
 				rollingTimer = 5.0f;
+				endRolling();
 			}
 		} else {
 			if(rollingTimer > 0) {
@@ -89,6 +115,22 @@ public class GameWorld {
 				startRolling();
 			}
 		}
+	}
+	
+	private void endRolling() {
+		if(currentFactor != null) {
+			currentFactor.toggle(false);
+		}
+		int set = (int) (Math.random() * 3);
+		if(set == 0) {
+			currentFactor = outer[(int) (Math.random() * outer.length)];
+		} else if (set == 1) {
+			currentFactor = middle[(int) (Math.random() * middle.length)];
+		} else if (set == 2) {
+			currentFactor = inner[(int) (Math.random() * inner.length)];
+		}
+		
+		currentFactor.toggle(true);
 	}
 	
 	private void startRolling() {
@@ -110,6 +152,20 @@ public class GameWorld {
 		
 		if(button_hover[0] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 			startRolling();
+		} else if(button_hover[1] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
+			Gdx.app.exit();
+		}
+	}
+	
+	private void factors(float tick) {
+		for(int i = 0; i < 22; i++) {
+			outer[i].update(tick, rollingSpeed);						
+		}
+		for(int i = 0; i < 12; i++) {
+			middle[i].update(tick, rollingSpeed);
+		}
+		for(int i = 0; i < 6; i++) {
+			inner[i].update(tick, rollingSpeed);
 		}
 	}
 	
@@ -122,25 +178,14 @@ public class GameWorld {
 		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
 		batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
 				
-		theta = 360f/22f;
 		for(int i = 0; i < 22; i++) {
-			int x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * i - rollingSpeed)) * 550);
-			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - rollingSpeed)) * 280);
-			batch.draw(button, x, y, 80, 80);						
+			outer[i].render(batch);						
 		}
-		
-		theta = 360f/12f;
 		for(int i = 0; i < 12; i++) {
-			int x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * i - ((int) rollingSpeed))) * 340);
-			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - ((int) rollingSpeed))) * 180);
-			batch.draw(button, x, y, 80, 80);
+			middle[i].render(batch);
 		}
-				
-		theta = 360f/6f;
 		for(int i = 0; i < 6; i++) {
-			int x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * i - ((int) rollingSpeed))) * 130);
-			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - ((int) rollingSpeed))) * 100);
-			batch.draw(button, x, y, 80, 80);
+			inner[i].render(batch);
 		}
 				
 		if(button_hover[0])

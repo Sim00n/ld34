@@ -111,3 +111,17 @@ FINAL IDEA:
 - Design:
  Player changes minors to affect metrics which affect majors.
  On/off minors => metrics => majors
+
+
+
+ TO-DO:
+ - Add factor types to each individual factors.
+ - Code factors' logic.
+ - Prepare and code pictures on each factors.
+ - Implement metrics' delta saving and displaying after each turn
+ - Implement win condition
+ - Music + Sounds
+ - Help
+ - Actual switch button
+ - Better fonts (if enough time)?
+ - 

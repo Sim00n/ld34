@@ -1,0 +1,36 @@
+package com.puzdrowski.decision.entity;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.puzdrowski.decision.Game;
+
+public class FactorEntity extends Entity {
+
+	public FactorEntity(Texture texture, int x, int y, int theta) {
+		super(texture, x, y, theta);
+	}
+	
+	@Override
+	public void render(Batch batch) {
+		theta = 360f/22f;
+		for(int i = 0; i < 22; i++) {
+			int x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * i - delta)) * 550);
+			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - delta)) * 280);
+			batch.draw(texture, x, y, 80, 80);						
+		}
+		
+		theta = 360f/12f;
+		for(int i = 0; i < 12; i++) {
+			int x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * i - ((int) delta))) * 340);
+			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - ((int) delta))) * 180);
+			batch.draw(texture, x, y, 80, 80);
+		}
+				
+		theta = 360f/6f;
+		for(int i = 0; i < 6; i++) {
+			int x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * i - ((int) delta))) * 130);
+			int y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * i - ((int) delta))) * 100);
+			batch.draw(texture, x, y, 80, 80);
+		}
+	}	
+}
