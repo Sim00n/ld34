@@ -25,11 +25,13 @@ public class GameWorld {
 	private WinStage winStage;
 	private FactorStage factorStage;
 
-	private Texture txt_background, board, button, big_button, big_button_hover, button_hover_t;
+	private Texture txt_background, board, button, big_button, big_button_hover, button_hover_t, help;
 	private BitmapFont font;
 	
 	private enum SCREEN {WELCOME, GAME, END};
 	private SCREEN screen;
+	private boolean displayHelp = false;
+	private float helpButtonTimer = 0f; 
 	
 	private boolean rolling = false;
 	private float rollingSpeed = 0.0f;
@@ -64,6 +66,7 @@ public class GameWorld {
 		big_button = new Texture(Gdx.files.internal("textures/big_button.png"));
 		big_button_hover = new Texture(Gdx.files.internal("textures/big_button_hover.png"));
 		button_hover_t = new Texture(Gdx.files.internal("textures/button_hover.png"));
+		help = new Texture(Gdx.files.internal("textures/help.png"));
 		
 		font = new BitmapFont();
 		font.setColor(new Color(0.1f, 0.42f, 0.78f, 1f)); // Buttons' font
@@ -119,11 +122,10 @@ public class GameWorld {
 		factors[38] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 4, FACTORS.EPIDEMICS);
 		factors[39] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 5, FACTORS.DISASTER_PREVENTION);
 		
-		endRolling();
+		//endRolling();
 	}
 	
 	public void update(float tick) {
-		
 		roll(tick);
 		buttons(tick);
 		factors(tick);
@@ -176,6 +178,7 @@ public class GameWorld {
 		verifyWinCondition();
 		currentFactor.toggle(true);
 		factorStage.updateData(currentFactor);
+		factorStage.showing = true;
 	}
 	
 	private void startRolling() {
@@ -198,6 +201,17 @@ public class GameWorld {
 			startRolling();
 		} else if(button_hover[1] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 			Gdx.app.exit();
+		} else if(button_hover[3] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
+			if(helpButtonTimer == 0f) {
+				displayHelp = !displayHelp;
+				helpButtonTimer = 0.1f;
+			}
+		}
+		
+		if(helpButtonTimer > 0f) {
+			helpButtonTimer -= tick;
+		} else if(helpButtonTimer < 0f) {
+			helpButtonTimer = 0f;
 		}
 		
 		hintStage.showing = false;
@@ -267,6 +281,9 @@ public class GameWorld {
 		}
 
 		batch.begin();
+		if(displayHelp) {
+			batch.draw(help, 0f, 0f, Game.WIDTH, Game.HEIGHT);
+		}
 		renderButtons();
 		batch.end();
 	}

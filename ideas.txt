@@ -121,11 +121,9 @@ FINAL IDEA:
  [x] Implement metrics' delta saving and displaying after each turn
  [x] Implement win condition
  - Music + Sounds
- - Help
+ [x] Help
  [x] Actual switch button
  [x] upper/lower bound checking when adding deltas to metrics
  [x] item descriptions
  - balance
- - menu
- - selecting on/off state
- - re-do all ui elements so it's not makeshift (if time allows)
+ [x] selecting on/off state

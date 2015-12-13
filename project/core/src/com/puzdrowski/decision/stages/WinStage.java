@@ -19,19 +19,19 @@ public class WinStage extends StageWrapper {
 		if(Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f) {
 			// thriving
 			String s = "";
-			s += "Under your rule the world is thriving. Through smart planning, proper social and economic policies, all children around the\n";
+			s += "Under your rule the world is thriving. Through smart planning and proper socio-economic policies, all children around the\n";
 			s += "world will eat dinner today. They will drink clean, safe water and their parents will not spare a meal to satisfy their kids.\n";
 			s += "There will be no mothers and wifes crying after the deaths of their sons, daughters and husbands. Everyone will be satisfied,\n";
-			s += "at least on the spiritual level.\nYou are a God!";
+			s += "at least spiritualy.\nYou are a God!";
 			message.setText(s);
 		}
 		if(Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 0f && Metrics.WAR >= 0f) {
 			String s = "";
 			s += "Under your rule the world is completely destroyed. Through a combination of bad social and economic policies children and\n";
-			s += "their parents aroudn the world won't eat a dinner today and will most likely starve in the next few months. Poor conditions,\n";
+			s += "their parents around the world won't eat a dinner today and will most likely starve in the next few months. Poor conditions,\n";
 			s += "bad environmental policies and lack of proper facilities led drinking water to reach the price of petroleum. Most young men\n";
-			s += "died in wars and their families will follow. The world is an utter mess and there doesn't seem to be even the slightest hint\n";
-			s += "of happines of people's faces.\nYou've become the biblical Satan!";
+			s += "died in wars and their families will follow. The world is an utter mess and it doesn't seem to be getting better. There are\n";
+			s += "no hints of happines on people's faces.\nYou've become the biblical Satan!";
 			message.setText(s);
 		}
 		
@@ -41,6 +41,7 @@ public class WinStage extends StageWrapper {
 		skills += "Technology: " + Metrics.TECH + "%\n";
 		skills += "Environment: " + Metrics.ENV + "%\n";
 		skills += "Space Exploration: " + Metrics.SPACE + "%\n";
+		skills += "\nHunger: " + Metrics.HUNGER + "%";
 		stats1.setText(skills);
 		
 		skills = "";
@@ -49,6 +50,7 @@ public class WinStage extends StageWrapper {
 		skills += "Jobs: " + Metrics.JOBS + "%\n";
 		skills += "Infrastructure: " + Metrics.INFRASTRUCTURE + "%\n";
 		skills += "Vodka: " + Metrics.VODKA + "%\n";
+		skills += "\nWars: " + Metrics.WAR + "%";
 		stats2.setText(skills);
 		
 		skills = "";
@@ -56,7 +58,8 @@ public class WinStage extends StageWrapper {
 		skills += "Energy Availability: " + Metrics.ENERGY + "%\n";
 		skills += "Rule of Law: " + Metrics.LAW + "%\n";
 		skills += "Peace: " + Metrics.PEACE + "%\n";
-		skills += "Love: " + Metrics.LOVE + "%\n";			
+		skills += "Love: " + Metrics.LOVE + "%\n";
+		skills += "\nHappiness: " + Metrics.HAPPINESS + "%";
 		stats3.setText(skills);
 	}
 	

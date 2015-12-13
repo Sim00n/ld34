@@ -1,0 +1,92 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.entity.FactorEntity;
+
+public class FactorStage extends StageWrapper {
+
+	private Window window;
+	private Label text;
+	private Label stats;
+	private Image image;
+	private Button changeButton, skipButton;
+	public boolean showing;
+	
+	public FactorStage(Game game) {
+		super(game);
+		showing = false;
+	}
+
+	public void updateData(FactorEntity fe) {
+		window.getTitleLabel().setText("Do you want to change this policy?  -  " + fe.getTitle());
+		image.setDrawable(new SpriteDrawable(new Sprite(fe.getIcon())));
+		image.setScale(0.8f);
+		image.setPosition(15f, 0);
+		
+		if(fe.isAffective()) {
+			text.setText("\n"+fe.getDesc());
+		} else {
+			text.setText("\n"+fe.getDesc().replaceAll("\\+", "").replaceAll("\\-", "+"));
+		}
+		
+		stats.setText(fe.getStats());
+		
+		
+	}
+	
+	@Override
+	public void update(float tick) {
+		super.update(tick);
+		if(showing) {
+			window.setX(Gdx.input.getX());
+			window.setY(Game.HEIGHT - Gdx.input.getY());
+		}
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		window = new Window("Do you want to change this policy?", skin);
+		window.setSize(800, 300);
+		window.setPosition(Game.WIDTH / 2 - 400, Game.HEIGHT / 2 - 150);
+		
+		image = new Image(new Texture(Gdx.files.internal("textures/icons/police.png")));
+		
+		Table table = new Table();
+		
+		text = new Label("123", skin);
+		text.setWrap(true);
+		text.setWidth(300);
+				
+		stats = new Label("123", skin);
+		stats.setWrap(true);
+		stats.setAlignment(Align.center);
+		stats.setWidth(200);
+		
+		changeButton = new TextButton("Change", skin);
+		skipButton = new TextButton("Skip", skin);
+		
+		table.add(image).width(200f);
+		table.add(text).width(300f);
+		table.add(stats).width(300f);
+		table.row();
+		table.add(changeButton);
+		table.add(new Label(" ", skin));
+		table.add(skipButton);
+		
+		window.add(table);
+		stage.addActor(window);
+	}
+	
+}

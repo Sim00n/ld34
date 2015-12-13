@@ -3,13 +3,16 @@ package com.puzdrowski.decision.stages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.puzdrowski.decision.Game;
 import com.puzdrowski.decision.entity.FactorEntity;
 
@@ -21,6 +24,7 @@ public class FactorStage extends StageWrapper {
 	private Image image;
 	private Button changeButton, skipButton;
 	public boolean showing;
+	private FactorEntity currentFactor;
 	
 	public FactorStage(Game game) {
 		super(game);
@@ -28,28 +32,20 @@ public class FactorStage extends StageWrapper {
 	}
 
 	public void updateData(FactorEntity fe) {
+		this.currentFactor = fe;
+		window.getTitleLabel().setText("Do you want to change this policy?  -  " + fe.getTitle());
 		image.setDrawable(new SpriteDrawable(new Sprite(fe.getIcon())));
 		image.setScale(0.8f);
 		image.setPosition(15f, 0);
+		text.setText("\n"+fe.getDesc());
 		
 		if(fe.isAffective()) {
-			text.setText("\n"+fe.getDesc());
+			stats.setText(fe.getStats());
 		} else {
-			text.setText("\n"+fe.getDesc().replaceAll("\\+", "").replaceAll("\\-", "+"));
+			stats.setText("\n"+fe.getStats().replaceAll("\\-", "").replaceAll("\\+", "-"));
 		}
 		
-		stats.setText(fe.getStats());
-		
-		
-	}
-	
-	@Override
-	public void update(float tick) {
-		super.update(tick);
-		if(showing) {
-			window.setX(Gdx.input.getX());
-			window.setY(Game.HEIGHT - Gdx.input.getY());
-		}
+		Gdx.input.setInputProcessor(stage);
 	}
 	
 	@Override
@@ -70,20 +66,51 @@ public class FactorStage extends StageWrapper {
 				
 		stats = new Label("123", skin);
 		stats.setWrap(true);
+		stats.setAlignment(Align.center);
 		stats.setWidth(200);
 		
 		changeButton = new TextButton("Change", skin);
 		skipButton = new TextButton("Skip", skin);
 		
-		table.add(image);
-		table.add(text);
-		table.add(stats);
-		table.row();
-		table.add(changeButton);
-		table.add(skipButton);
+		
+		table.add(image).width(200f);
+		table.add(text).width(300f);
+		table.add(stats).width(300f);
+		table.row().padTop(30f);
+		
+		Table buttonTable = new Table();
+		buttonTable.add(changeButton);
+		buttonTable.add(skipButton).padLeft(30f);
+	
+		table.add(buttonTable).colspan(3);
 		
 		window.add(table);
 		stage.addActor(window);
+		
+		listeners();
+	}
+	
+	@Override
+	public void render() {
+		if(showing)
+			super.render();
+	}
+	
+	public void listeners() {
+		changeButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				currentFactor.setAffective(!currentFactor.isAffective());
+				showing = false;
+			}
+		});
+		
+		skipButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showing = false;
+			}
+		});
 	}
 	
 }

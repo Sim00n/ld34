@@ -32,12 +32,12 @@ public class HintStage extends StageWrapper {
 		image.setDrawable(new SpriteDrawable(new Sprite(fe.getIcon())));
 		image.setScale(0.8f);
 		image.setPosition(15f, 0);
+		text.setText("\n"+fe.getDesc());
 		if(fe.isAffective()) {
-			text.setText("\n"+fe.getDesc());
+			stats.setText(fe.getStats());
 		} else {
-			text.setText("\n"+fe.getDesc().replaceAll("\\+", "").replaceAll("\\-", "+"));
+			stats.setText("\n"+fe.getStats().replaceAll("\\-", "").replaceAll("\\+", "-"));
 		}
-		stats.setText(fe.getStats());
 	}
 	
 	@Override
