@@ -1983,3 +1983,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.springsource.ide.eclipse.gradle.core 4 0 2015-12-12 17:54:57.388
 !MESSAGE Couldn't launch Decision-desktop because no tasks have been selected
+
+!ENTRY org.springsource.ide.eclipse.gradle.core 4 0 2015-12-12 21:59:44.906
+!MESSAGE Couldn't launch Decision-desktop because no tasks have been selected

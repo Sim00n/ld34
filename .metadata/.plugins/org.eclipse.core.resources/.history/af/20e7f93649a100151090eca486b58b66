@@ -541,7 +541,7 @@ public class GameWorld {
 		Metrics.PEACE			+= Metrics.PEACE_D;
 		Metrics.LOVE			+= Metrics.LOVE_D;
 		
-		System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
+		//System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
 		
 		if(Metrics.HEALTH > 100f) Metrics.HEALTH = 100f;
 		if(Metrics.HEALTH < 0f)   Metrics.HEALTH = 0f;

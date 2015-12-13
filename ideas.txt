@@ -124,3 +124,5 @@ FINAL IDEA:
  - Help
  [x] Actual switch button
  - Better fonts (if enough time)? 
+ [x] upper/lower bound checking when adding deltas to metrics
+ - item descriptions

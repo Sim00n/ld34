@@ -185,8 +185,14 @@ public class GameWorld {
 	}
 	
 	private void factors(float tick) {
-		for(int i = 0; i < factors.length; i++) {
-			factors[i].update(tick, rollingSpeed);
+		for(int i = 0; i < 22; i++) {
+			outer[i].update(tick, rollingSpeed);						
+		}
+		for(int i = 0; i < 12; i++) {
+			middle[i].update(tick, rollingSpeed);
+		}
+		for(int i = 0; i < 6; i++) {
+			inner[i].update(tick, rollingSpeed);
 		}
 	}
 	
@@ -199,8 +205,14 @@ public class GameWorld {
 		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
 		batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
 				
-		for(int i = 0; i < factors.length; i++) {
-			factors[i].render(batch);						
+		for(int i = 0; i < 22; i++) {
+			outer[i].render(batch);						
+		}
+		for(int i = 0; i < 12; i++) {
+			middle[i].render(batch);
+		}
+		for(int i = 0; i < 6; i++) {
+			inner[i].render(batch);
 		}
 		
 		if(button_hover[0])
@@ -242,8 +254,8 @@ public class GameWorld {
 				
 		Metrics.HEALTH_D = Metrics.FOOD_D = Metrics.TECH_D = Metrics.ENV_D = Metrics.SPACE_D = Metrics.DRUG_D = Metrics.EDUCATION_D = Metrics.JOBS_D = Metrics.INFRASTRUCTURE_D = Metrics.VODKA_D = Metrics.WIFI_D = Metrics.ENERGY_D = Metrics.LAW_D = Metrics.PEACE_D = Metrics.LOVE = 0f;
 		
-		for(int i = 0; i < factors.length; i++) {
-			FactorEntity fe = factors[i];
+		for(int i = 0; i < outer.length; i++) {
+			FactorEntity fe = outer[i];
 			FACTORS f = fe.getFactor();
 			int a = (fe.isAffective())? 1 : -1;
 			
@@ -541,7 +553,7 @@ public class GameWorld {
 		Metrics.PEACE			+= Metrics.PEACE_D;
 		Metrics.LOVE			+= Metrics.LOVE_D;
 		
-		System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
+		//System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
 		
 		if(Metrics.HEALTH > 100f) Metrics.HEALTH = 100f;
 		if(Metrics.HEALTH < 0f)   Metrics.HEALTH = 0f;
