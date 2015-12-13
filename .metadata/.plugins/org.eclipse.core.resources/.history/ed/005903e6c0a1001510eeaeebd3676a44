@@ -1,0 +1,95 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.Metrics;
+
+public class WinStage extends StageWrapper {
+
+	Window window;
+	Label message, stats1, stats2, stats3;
+	
+	public WinStage(Game game) {
+		super(game);
+	}
+	
+	public void updateData() {
+		if(Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f) {
+			// thriving
+			message.setText("Under your rule the world is thriving. Through smart planning, proper social and economic policies, all children around the world will eat dinner today. They will drink clean, safe water and their parents will not spare a meal to satisfy their kids. There will be no mothers and wifes crying after the deaths of their sons, daughters and husbands. Everyone will be satisfied, at least on the spiritual level.\nYou are a God!");
+		}
+		if(Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 0f && Metrics.WAR >= 0f) {
+			message.setText("Under your rule the world is completely destroyed. Through a combination of bad social and economic policies children and their parents aroudn the world won't eat a dinner today and will most likely starve in the next few months. Poor conditions, bad environmental policies and lack of proper facilities led drinking water to reach the price of petroleum. Most young men died in wars and their families will follow. The world is an utter mess and there doesn't seem to be even the slightest hint of happines of people's faces.\nYou've become the biblical Satan!");
+		}
+		
+		String skills = "";
+		skills += "Health: " + Metrics.HEALTH + "%\n";
+		skills += "Food: " + Metrics.FOOD + "%\n";
+		skills += "Technology: " + Metrics.TECH + "%\n";
+		skills += "Environment: " + Metrics.ENV + "%\n";
+		skills += "Space Exploration: " + Metrics.SPACE + "%\n";
+		stats1.setText(skills);
+		
+		skills = "";
+		skills += "Drugs: " + Metrics.DRUG + "%\n";
+		skills += "Education: " + Metrics.EDUCATION + "%\n";
+		skills += "Jobs: " + Metrics.JOBS + "%\n";
+		skills += "Infrastructure: " + Metrics.INFRASTRUCTURE + "%\n";
+		skills += "Vodka: " + Metrics.VODKA + "%\n";
+		stats2.setText(skills);
+		
+		skills = "";
+		skills += "Internet Access: " + Metrics.WIFI + "%\n";
+		skills += "Energy Availability: " + Metrics.ENERGY + "%\n";
+		skills += "Rule of Law: " + Metrics.LAW + "%\n";
+		skills += "Peace: " + Metrics.PEACE + "%\n";
+		skills += "Love: " + Metrics.LOVE + "%\n";			
+		stats3.setText(skills);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		window = new Window("Congratulations! You've won!", skin);
+		window.setSize(1000f, 400f);
+		window.setPosition(Game.WIDTH / 2 - 500, Game.HEIGHT / 2 - 200);
+		
+		Table table = new Table();
+		table.setWidth(1000f);
+		
+		message = new Label("test\n\n", skin);
+		stats1 = new Label("test2\n\ntest2", skin);
+		stats2 = new Label("test3\n\ntest3", skin);
+		stats3 = new Label("test3\n\ntest3", skin);
+
+		message.setWidth(900f);
+		
+		stats1.setWidth(320f);
+		stats1.setWrap(true);
+		stats2.setWidth(320f);
+		stats2.setWrap(true);
+		stats3.setWidth(320f);
+		stats3.setWrap(true);
+
+		table.add(message).width(900f).colspan(3);
+		table.row();
+		table.add(stats1).width(320f);
+		table.add(stats2).width(320f);
+		table.add(stats3).width(320f);
+		
+		window.add(table);
+		stage.addActor(window);
+	}
+}
+
+
+
+
+
+
+
+
+

@@ -34,25 +34,25 @@ public class Metrics {
 	static BitmapFont font = new BitmapFont();
 	
 	public static void init() {
-		Metrics.HEALTH = 44 + (int) (Math.random() * 10 - 5);
-		Metrics.FOOD = 71 + (int) (Math.random() * 4 - 2);
-		Metrics.TECH = 54 + (int) (Math.random() * 10 - 5);
+		Metrics.HEALTH = 24 + (int) (Math.random() * 10 - 5);
+		Metrics.FOOD = 41 + (int) (Math.random() * 4 - 2);
+		Metrics.TECH = 34 + (int) (Math.random() * 10 - 5);
 		Metrics.ENV = 33 + (int) (Math.random() * 10 - 5);
 		Metrics.SPACE = 12 + (int) (Math.random() * 20 - 10);
 		Metrics.DRUG = 58 + (int) (Math.random() * 10 - 5);
 		Metrics.EDUCATION = 45 + (int) (Math.random() * 10 - 5);
-		Metrics.JOBS = 81 + (int) (Math.random() * 10 - 5);
-		Metrics.INFRASTRUCTURE = 20 + (int) (Math.random() * 10 - 5);
+		Metrics.JOBS = 51 + (int) (Math.random() * 10 - 5);
+		Metrics.INFRASTRUCTURE = 30 + (int) (Math.random() * 10 - 5);
 		Metrics.VODKA = 50 + (int) (Math.random() * 30 - 15);
-		Metrics.WIFI = 67 + (int) (Math.random() * 10 - 5);
+		Metrics.WIFI = 57 + (int) (Math.random() * 10 - 5);
 		Metrics.ENERGY = 60 + (int) (Math.random() * 10 - 5);
-		Metrics.LAW = 64 + (int) (Math.random() * 10 - 5);
-		Metrics.PEACE = 80 + (int) (Math.random() * 20 - 10);
-		Metrics.LOVE = 55 + (int) (Math.random() * 20 - 10);
+		Metrics.LAW = 34 + (int) (Math.random() * 10 - 5);
+		Metrics.PEACE = 40 + (int) (Math.random() * 20 - 10);
+		Metrics.LOVE = 25 + (int) (Math.random() * 20 - 10);
 		
-		Metrics.HUNGER = 30 + (int) (Math.random() * 10 - 5);
-		Metrics.WAR = 50 + (int) (Math.random() * 10 - 5);
-		Metrics.HAPPINESS = 20 + (int) (Math.random() * 30 - 15);
+		Metrics.HUNGER = 37 + (int) (Math.random() * 10 - 5);
+		Metrics.WAR = 51 + (int) (Math.random() * 10 - 5);
+		Metrics.HAPPINESS = 23 + (int) (Math.random() * 30 - 15);
 	}
 	
 	public static void render(Batch batch) {
@@ -110,148 +110,184 @@ public class Metrics {
 		sr.box(900 + 300, Game.HEIGHT/1.09f, 0, (WAR*1.8f), 10, 10);
 		sr.box(900 + 300, Game.HEIGHT/1.14f, 0, (HAPPINESS*1.8f), 10, 10);		
 		
-		if(HEALTH_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(0 + 30 + (HEALTH*1.8f), Game.HEIGHT/1.04f, 0, -HEALTH_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(0 + 30 + (HEALTH*1.8f), Game.HEIGHT/1.04f, 0, HEALTH_D*1.8f, 10, 10);
+		if(HEALTH > 0 && HEALTH < 100) {
+			if(HEALTH_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(0 + 30 + (HEALTH*1.8f), Game.HEIGHT/1.04f, 0, -HEALTH_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(0 + 30 + (HEALTH*1.8f), Game.HEIGHT/1.04f, 0, HEALTH_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(FOOD_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(0 + 30 + (FOOD*1.8f), Game.HEIGHT/1.09f, 0, -FOOD_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(0 + 30 + (FOOD*1.8f), Game.HEIGHT/1.09f, 0, FOOD_D*1.8f, 10, 10);
+		if(FOOD > 0 && FOOD < 100) {
+			if(FOOD_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(0 + 30 + (FOOD*1.8f), Game.HEIGHT/1.09f, 0, -FOOD_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(0 + 30 + (FOOD*1.8f), Game.HEIGHT/1.09f, 0, FOOD_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(TECH_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(0 + 30 + (TECH*1.8f), Game.HEIGHT/1.14f, 0, -TECH_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(0 + 30 + (TECH*1.8f), Game.HEIGHT/1.14f, 0, TECH_D*1.8f, 10, 10);
+		if(TECH > 0 && TECH < 100) {
+			if(TECH_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(0 + 30 + (TECH*1.8f), Game.HEIGHT/1.14f, 0, -TECH_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(0 + 30 + (TECH*1.8f), Game.HEIGHT/1.14f, 0, TECH_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(ENV_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(180 + 60 + (ENV*1.8f), Game.HEIGHT/1.04f, 0, -ENV_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(180 + 60 + (ENV*1.8f), Game.HEIGHT/1.04f, 0, ENV_D*1.8f, 10, 10);
+		if(ENV > 0 && ENV < 100) {
+			if(ENV_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(180 + 60 + (ENV*1.8f), Game.HEIGHT/1.04f, 0, -ENV_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(180 + 60 + (ENV*1.8f), Game.HEIGHT/1.04f, 0, ENV_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(SPACE_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(180 + 60 + (SPACE*1.8f), Game.HEIGHT/1.09f, 0, -SPACE_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(180 + 60 + (SPACE*1.8f), Game.HEIGHT/1.09f, 0, SPACE_D*1.8f, 10, 10);
+		if(SPACE > 0 && SPACE < 100) {
+			if(SPACE_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(180 + 60 + (SPACE*1.8f), Game.HEIGHT/1.09f, 0, -SPACE_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(180 + 60 + (SPACE*1.8f), Game.HEIGHT/1.09f, 0, SPACE_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(DRUG_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(180 + 60 + (DRUG*1.8f), Game.HEIGHT/1.14f, 0, -DRUG_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(180 + 60 + (DRUG*1.8f), Game.HEIGHT/1.14f, 0, DRUG_D*1.8f, 10, 10);
+		if(DRUG > 0 && DRUG < 100) {
+			if(DRUG_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(180 + 60 + (DRUG*1.8f), Game.HEIGHT/1.14f, 0, -DRUG_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(180 + 60 + (DRUG*1.8f), Game.HEIGHT/1.14f, 0, DRUG_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(EDUCATION_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(360 + 90 + (EDUCATION*1.8f), Game.HEIGHT/1.04f, 0, -EDUCATION_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(360 + 90 + (EDUCATION*1.8f), Game.HEIGHT/1.04f, 0, EDUCATION_D*1.8f, 10, 10);
+		if(EDUCATION > 0 && EDUCATION < 100) {
+			if(EDUCATION_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(360 + 90 + (EDUCATION*1.8f), Game.HEIGHT/1.04f, 0, -EDUCATION_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(360 + 90 + (EDUCATION*1.8f), Game.HEIGHT/1.04f, 0, EDUCATION_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(JOBS_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(360 + 90 + (JOBS*1.8f), Game.HEIGHT/1.09f, 0, -JOBS_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(360 + 90 + (JOBS*1.8f), Game.HEIGHT/1.09f, 0, JOBS_D*1.8f, 10, 10);
+		if(JOBS > 0 && JOBS < 100) {
+			if(JOBS_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(360 + 90 + (JOBS*1.8f), Game.HEIGHT/1.09f, 0, -JOBS_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(360 + 90 + (JOBS*1.8f), Game.HEIGHT/1.09f, 0, JOBS_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(INFRASTRUCTURE_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(360 + 90 + (INFRASTRUCTURE*1.8f), Game.HEIGHT/1.14f, 0, -INFRASTRUCTURE_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(360 + 90 + (INFRASTRUCTURE*1.8f), Game.HEIGHT/1.14f, 0, INFRASTRUCTURE_D*1.8f, 10, 10);
+		if(INFRASTRUCTURE > 0 && INFRASTRUCTURE < 100) {
+			if(INFRASTRUCTURE_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(360 + 90 + (INFRASTRUCTURE*1.8f), Game.HEIGHT/1.14f, 0, -INFRASTRUCTURE_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(360 + 90 + (INFRASTRUCTURE*1.8f), Game.HEIGHT/1.14f, 0, INFRASTRUCTURE_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(VODKA_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(540 + 120 + (VODKA*1.8f), Game.HEIGHT/1.04f, 0, -VODKA_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(540 + 120 + (VODKA*1.8f), Game.HEIGHT/1.04f, 0, VODKA_D*1.8f, 10, 10);
+		if(VODKA > 0 && VODKA < 100) {
+			if(VODKA_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(540 + 120 + (VODKA*1.8f), Game.HEIGHT/1.04f, 0, -VODKA_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(540 + 120 + (VODKA*1.8f), Game.HEIGHT/1.04f, 0, VODKA_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(WIFI_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(540 + 120 + (WIFI*1.8f), Game.HEIGHT/1.09f, 0, -WIFI_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(540 + 120 + (WIFI*1.8f), Game.HEIGHT/1.09f, 0, WIFI_D*1.8f, 10, 10);
+		if(WIFI > 0 && WIFI < 100) {
+			if(WIFI_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(540 + 120 + (WIFI*1.8f), Game.HEIGHT/1.09f, 0, -WIFI_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(540 + 120 + (WIFI*1.8f), Game.HEIGHT/1.09f, 0, WIFI_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(ENERGY_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(540 + 120 + (ENERGY*1.8f), Game.HEIGHT/1.14f, 0, -ENERGY_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(540 + 120 + (ENERGY*1.8f), Game.HEIGHT/1.14f, 0, ENERGY_D*1.8f, 10, 10);
+		if(ENERGY > 0 && ENERGY < 100) {
+			if(ENERGY_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(540 + 120 + (ENERGY*1.8f), Game.HEIGHT/1.14f, 0, -ENERGY_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(540 + 120 + (ENERGY*1.8f), Game.HEIGHT/1.14f, 0, ENERGY_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(LAW_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(720 + 150 + (LAW*1.8f), Game.HEIGHT/1.04f, 0, -LAW_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(720 + 150 + (LAW*1.8f), Game.HEIGHT/1.04f, 0, LAW_D*1.8f, 10, 10);
+		if(LAW > 0 && LAW < 100) {
+			if(LAW_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(720 + 150 + (LAW*1.8f), Game.HEIGHT/1.04f, 0, -LAW_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(720 + 150 + (LAW*1.8f), Game.HEIGHT/1.04f, 0, LAW_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(PEACE_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(720 + 150 + (PEACE*1.8f), Game.HEIGHT/1.09f, 0, -PEACE_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(720 + 150 + (PEACE*1.8f), Game.HEIGHT/1.09f, 0, PEACE_D*1.8f, 10, 10);
+		if(PEACE > 0 && PEACE < 100) {
+			if(PEACE_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(720 + 150 + (PEACE*1.8f), Game.HEIGHT/1.09f, 0, -PEACE_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(720 + 150 + (PEACE*1.8f), Game.HEIGHT/1.09f, 0, PEACE_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(LOVE_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(720 + 150 + (LOVE*1.8f), Game.HEIGHT/1.14f, 0, -LOVE_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(720 + 150 + (LOVE*1.8f), Game.HEIGHT/1.14f, 0, LOVE_D*1.8f, 10, 10);
+		if(LOVE > 0 && LOVE < 100) {
+			if(LOVE_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(720 + 150 + (LOVE*1.8f), Game.HEIGHT/1.14f, 0, -LOVE_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(720 + 150 + (LOVE*1.8f), Game.HEIGHT/1.14f, 0, LOVE_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(HUNGER_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(900 + 300 + (HUNGER*1.8f), Game.HEIGHT/1.04f, 0, -HUNGER_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(900 + 300 + (HUNGER*1.8f), Game.HEIGHT/1.04f, 0, HUNGER_D*1.8f, 10, 10);
+		if(HUNGER > 0 && HUNGER < 100) {
+			if(HUNGER_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(900 + 300 + (HUNGER*1.8f), Game.HEIGHT/1.04f, 0, -HUNGER_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(900 + 300 + (HUNGER*1.8f), Game.HEIGHT/1.04f, 0, HUNGER_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(WAR_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(900 + 300 + (WAR*1.8f), Game.HEIGHT/1.09f, 0, -WAR_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(900 + 300 + (WAR*1.8f), Game.HEIGHT/1.09f, 0, WAR_D*1.8f, 10, 10);
+		if(WAR > 0 && WAR < 100) {
+			if(WAR_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(900 + 300 + (WAR*1.8f), Game.HEIGHT/1.09f, 0, -WAR_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(900 + 300 + (WAR*1.8f), Game.HEIGHT/1.09f, 0, WAR_D*1.8f, 10, 10);
+			}
 		}
 		
-		if(HAPPINESS_D < 0 && showDeltas) {
-			sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
-			sr.box(900 + 300 + (HAPPINESS*1.8f), Game.HEIGHT/1.14f, 0, -HAPPINESS_D*1.8f, 10, 10);
-		} else {
-			sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
-			sr.box(900 + 300 + (HAPPINESS*1.8f), Game.HEIGHT/1.14f, 0, HAPPINESS_D*1.8f, 10, 10);
+		if(HAPPINESS > 0 && HAPPINESS < 100) {
+			if(HAPPINESS_D < 0 && showDeltas) {
+				sr.setColor(new Color(0.85f, 0.16f, 0.12f, 1f));
+				sr.box(900 + 300 + (HAPPINESS*1.8f), Game.HEIGHT/1.14f, 0, -HAPPINESS_D*1.8f, 10, 10);
+			} else {
+				sr.setColor(new Color(0.35f, 0.86f, 0.32f, 1f));
+				sr.box(900 + 300 + (HAPPINESS*1.8f), Game.HEIGHT/1.14f, 0, HAPPINESS_D*1.8f, 10, 10);
+			}
 		}
 		
 		sr.end();

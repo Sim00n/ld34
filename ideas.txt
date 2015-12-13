@@ -116,13 +116,16 @@ FINAL IDEA:
 
  TO-DO:
  [x] Add factor types to each individual factors.
- - Code factors' logic.
+ [x] Code factors' logic.
  [x] Prepare and code pictures on each factors.
  [x] Implement metrics' delta saving and displaying after each turn
- - Implement win condition
+ [x] Implement win condition
  - Music + Sounds
  - Help
  [x] Actual switch button
- - Better fonts (if enough time)? 
  [x] upper/lower bound checking when adding deltas to metrics
- - item descriptions
+ [x] item descriptions
+ - balance
+ - menu
+ - selecting on/off state
+ - re-do all ui elements so it's not makeshift (if time allows)

@@ -1,0 +1,17 @@
+package com.puzdrowski.decision.stages;
+
+import com.puzdrowski.decision.Game;
+
+public class FactorStage extends StageWrapper {
+
+	public FactorStage(Game game) {
+		super(game);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		
+	}
+}

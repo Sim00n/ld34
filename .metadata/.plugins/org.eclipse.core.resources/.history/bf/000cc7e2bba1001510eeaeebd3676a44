@@ -1,0 +1,53 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.puzdrowski.decision.Game;
+
+public class WinStage extends StageWrapper {
+
+	Window window;
+	
+	public WinStage(Game game) {
+		super(game);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		window = new Window("Congratulations! You've won!", skin);
+		window.setSize(1000, 400);
+		
+		Table table = new Table();
+		HorizontalGroup hz = new HorizontalGroup();
+				
+		Label message = new Label("test", skin);
+		Label stats_l = new Label("test2", skin);
+		Label stats_r = new Label("test3", skin);
+
+		stats_l.setWidth(300f);
+		stats_l.setWrap(true);
+		stats_r.setWidth(300f);
+		stats_r.setWrap(true);
+		
+		hz.addActor(stats_l);
+		hz.addActor(stats_r);
+		table.add(message).width(1000f);
+		table.add(hz);
+		
+		window.add(table);
+		stage.addActor(window);
+	}
+}
+
+
+
+
+
+
+
+
+

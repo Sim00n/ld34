@@ -1,0 +1,5 @@
+package com.puzdrowski.decision.stages;
+
+public class FactorStage {
+
+}

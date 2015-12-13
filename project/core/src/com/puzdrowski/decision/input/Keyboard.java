@@ -7,7 +7,7 @@ public class Keyboard {
 	
 	public static final int NUM_KEYS = 1;
 	
-	public static final int ROLL = 0;
+	public static final int END = 0;
 	
 	static {
 		keys = new boolean[NUM_KEYS];

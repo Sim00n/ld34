@@ -1,0 +1,13 @@
+package com.puzdrowski.decision.stages;
+
+import com.puzdrowski.decision.Game;
+
+public class WinStage extends StageWrapper {
+
+	public WinStage(Game game) {
+		super(game);
+	}
+	
+	
+
+}

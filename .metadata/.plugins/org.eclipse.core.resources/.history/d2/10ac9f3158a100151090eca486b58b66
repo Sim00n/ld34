@@ -1,0 +1,248 @@
+package com.puzdrowski.decision.entity;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
+
+public class FactorEntity extends Entity {
+
+	private boolean isCurrent;
+	private boolean isAffective;
+	private Texture hoverTexture;
+	private Texture icon;
+	private Image image;
+	private FACTORS factor;
+	private boolean rolling;
+	private String desc;
+	private String title;
+	
+	//33
+	public static enum FACTORS {
+		POPULATION_GROWTH, RELIGIOUS_FREEDOM, CLIMATE_WARMING, MILITARIZATION,
+		NASA, NUCLEAR_ENERGY, QUANTUM_COMPUTING, ELECTRIC_CARS, VACCINES, STD_PREVENTION,
+		HIGH_UNIVERSITY_COST, GLOBAL_POLICE, INDUSTRY_REGULATION, UNITED_NATIONS,
+		BAN_ON_ALCOHOL, BAN_ON_DRUGS, MEDICAL_RESEARCH, FISHING_QUOTAS, ANIMAL_PROTECTION,
+		INFO_FREEDOM, MINIMUM_WAGE, GENEVA_CONVENTION, BAN_ON_SMOKING, CONFORMITY, DIVERSITY,
+		GENDER_EQUALITY, MARRIAGE_EQUALITY, CIA_PRISONS, POPULATION_TRACKING, CCTV, 
+		ALCOHOL_TAX, CORPORATION_TAX, PROPERTY_TAX, HIGH_UNEMPLOYMENT, UTILITY_TAX,
+		OPEN_TRADE, RENEWABLE_ENERGY, SEWER_TREATMENT, EPIDEMICS, DISASTER_PREVENTION
+	};
+	
+	public FactorEntity(Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor) {
+		super(texture, theta, type, i);
+		this.factor = factor;
+		this.isCurrent = false;
+		this.isAffective = false;
+		this.rolling = false;
+		
+		if(factor == FACTORS.POPULATION_GROWTH) {
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+			desc = "Some test string";
+			title = "Population Growth";
+		} else if(factor == FACTORS.RELIGIOUS_FREEDOM) {
+			icon = new Texture(Gdx.files.internal("textures/icons/religion.png"));
+		} else if(factor == FACTORS.CLIMATE_WARMING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/weather.png"));
+		} else if(factor == FACTORS.MILITARIZATION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/tank.png"));
+		} else if(factor == FACTORS.NASA) {
+			icon = new Texture(Gdx.files.internal("textures/icons/space.png"));
+		} else if(factor == FACTORS.NUCLEAR_ENERGY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/nuclear.png"));
+		} else if(factor == FACTORS.QUANTUM_COMPUTING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/tech.png"));
+		} else if(factor == FACTORS.ELECTRIC_CARS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/car.png"));
+		} else if(factor == FACTORS.VACCINES) {
+			icon = new Texture(Gdx.files.internal("textures/icons/vaccine.png"));
+		} else if(factor == FACTORS.STD_PREVENTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/condom.png"));
+		} else if(factor == FACTORS.HIGH_UNIVERSITY_COST) {
+			icon = new Texture(Gdx.files.internal("textures/icons/education.png"));
+		} else if(factor == FACTORS.GLOBAL_POLICE) {
+			icon = new Texture(Gdx.files.internal("textures/icons/police.png"));
+		} else if(factor == FACTORS.INDUSTRY_REGULATION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/factory.png"));
+		} else if(factor == FACTORS.UNITED_NATIONS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/handshake.png"));
+		} else if(factor == FACTORS.BAN_ON_ALCOHOL) {
+			icon = new Texture(Gdx.files.internal("textures/icons/alcohol_ban.png"));
+		} else if(factor == FACTORS.BAN_ON_DRUGS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/drug_ban.png"));
+		} else if(factor == FACTORS.MEDICAL_RESEARCH) {
+			icon = new Texture(Gdx.files.internal("textures/icons/health.png"));
+		} else if(factor == FACTORS.FISHING_QUOTAS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/fishing.png"));
+		} else if(factor == FACTORS.ANIMAL_PROTECTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/deer.png"));
+		} else if(factor == FACTORS.INFO_FREEDOM) {
+			icon = new Texture(Gdx.files.internal("textures/icons/press.png"));
+		} else if(factor == FACTORS.MINIMUM_WAGE) {
+			icon = new Texture(Gdx.files.internal("textures/icons/coins.png"));
+		} else if(factor == FACTORS.GENEVA_CONVENTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/geneva.png"));
+		} else if(factor == FACTORS.BAN_ON_SMOKING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/smoking_ban.png"));
+		} else if(factor == FACTORS.CONFORMITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/conformity.png"));
+		} else if(factor == FACTORS.DIVERSITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/people.png"));
+		} else if(factor == FACTORS.GENDER_EQUALITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/gender.png"));
+		} else if(factor == FACTORS.MARRIAGE_EQUALITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/marriage.png"));
+		} else if(factor == FACTORS.CIA_PRISONS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/handcuffs.png"));
+		} else if(factor == FACTORS.POPULATION_TRACKING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/gps.png"));
+		} else if(factor == FACTORS.CCTV) {
+			icon = new Texture(Gdx.files.internal("textures/icons/cctv.png"));
+		} else if(factor == FACTORS.ALCOHOL_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/alcohol_tax.png"));
+		} else if(factor == FACTORS.CORPORATION_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/corp_tax.png"));
+		} else if(factor == FACTORS.PROPERTY_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/house.png"));
+		} else if(factor == FACTORS.HIGH_UNEMPLOYMENT) {
+			icon = new Texture(Gdx.files.internal("textures/icons/unemployment.png"));
+		} else if(factor == FACTORS.UTILITY_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/utility.png"));
+		} else if(factor == FACTORS.OPEN_TRADE) {
+			icon = new Texture(Gdx.files.internal("textures/icons/ship.png"));
+		} else if(factor == FACTORS.RENEWABLE_ENERGY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/wind.png"));
+		} else if(factor == FACTORS.SEWER_TREATMENT) {
+			icon = new Texture(Gdx.files.internal("textures/icons/shit.png"));
+		} else if(factor == FACTORS.EPIDEMICS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/deead.png"));
+		} else if(factor == FACTORS.DISASTER_PREVENTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/disaster.png"));			
+		} else {
+			icon = new Texture(Gdx.files.internal("textures/icons/people.png"));
+		}
+		
+		image = new Image(icon);
+		
+		this.hoverTexture = hoverTexture;
+	}
+	
+	public void update(float tick, float rollingSpeed) {
+		super.update(tick);
+
+		if(type == TYPE.OUTER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 550);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 280);
+		} else if(type == TYPE.MIDDLE) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 340);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 180);
+		} else if(type == TYPE.INNER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 130);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 100);
+		}
+		
+		rolling = (rollingSpeed > GameWorld.ROLLING_LIMIT);
+	}
+	
+	@Override
+	public void render(Batch batch) {
+		if(isCurrent && !rolling) {
+			batch.draw(hoverTexture, x, y, 96, 96);
+			batch.draw(icon, x+18, y+16, 54, 54);
+		} else {
+			batch.draw(texture, x, y, 80, 80);
+			batch.draw(icon, x+12, y+15, 54, 54);
+		}
+	}
+	
+	public void toggle(boolean tog) {
+		isCurrent = tog;
+	}
+	
+	public void toggle() {
+		isCurrent = !isCurrent;
+	}
+	
+	public void toggleAffect(boolean tog) {
+		isAffective = tog;
+	}
+	
+	public void toggleAffect() {
+		isAffective = !isAffective;
+	}
+
+	public boolean isCurrent() {
+		return isCurrent;
+	}
+
+	public void setCurrent(boolean isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+
+	public boolean isAffective() {
+		return isAffective;
+	}
+
+	public void setAffective(boolean isAffective) {
+		this.isAffective = isAffective;
+	}
+
+	public Texture getHoverTexture() {
+		return hoverTexture;
+	}
+
+	public void setHoverTexture(Texture hoverTexture) {
+		this.hoverTexture = hoverTexture;
+	}
+
+	public Texture getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Texture icon) {
+		this.icon = icon;
+	}
+
+	public FACTORS getFactor() {
+		return factor;
+	}
+
+	public void setFactor(FACTORS factor) {
+		this.factor = factor;
+	}
+
+	public boolean isRolling() {
+		return rolling;
+	}
+
+	public void setRolling(boolean rolling) {
+		this.rolling = rolling;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+}

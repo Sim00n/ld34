@@ -2,6 +2,12 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
 <fullyQualifiedTypeName name="com.puzdrowski.decision.entity.Entity.TYPE"/>
-<fullyQualifiedTypeName name="com.puzdrowski.decision.entity.FactorEntity"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
+<fullyQualifiedTypeName name="javax.swing.plaf.basic.BasicBorders.RolloverButtonBorder"/>
+<fullyQualifiedTypeName name="com.puzdrowski.decision.entity.FactorEntity.FACTORS"/>
+<fullyQualifiedTypeName name="jdk.internal.org.objectweb.asm.Label"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.utils.Drawable"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
+<fullyQualifiedTypeName name="com.puzdrowski.decision.entity.FactorEntity"/>
+<fullyQualifiedTypeName name="java.lang.SuppressWarnings"/>
 </qualifiedTypeNameHistroy>

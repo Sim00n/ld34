@@ -11,7 +11,9 @@ import com.puzdrowski.decision.entity.Entity.TYPE;
 import com.puzdrowski.decision.entity.FactorEntity;
 import com.puzdrowski.decision.entity.FactorEntity.FACTORS;
 import com.puzdrowski.decision.input.Keyboard;
-import com.puzdrowski.decision.stages.GameStage;
+import com.puzdrowski.decision.stages.FactorStage;
+import com.puzdrowski.decision.stages.HintStage;
+import com.puzdrowski.decision.stages.WinStage;
 
 public class GameWorld {
 
@@ -19,12 +21,14 @@ public class GameWorld {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private GameStage gameStage;
+	private HintStage hintStage;
+	private WinStage winStage;
+	private FactorStage factorStage;
 
 	private Texture txt_background, board, button, big_button, big_button_hover, button_hover_t;
 	private BitmapFont font;
 	
-	private enum SCREEN {WELCOME, GAME, PAUSE, EXIT};
+	private enum SCREEN {WELCOME, GAME, END};
 	private SCREEN screen;
 	
 	private boolean rolling = false;
@@ -49,7 +53,9 @@ public class GameWorld {
 		camera.setToOrtho(false, Game.WIDTH, Game.HEIGHT);
 		batch = new SpriteBatch();
 		
-		gameStage = new GameStage(this.game);
+		hintStage = new HintStage(this.game);
+		winStage = new WinStage(this.game);
+		factorStage = new FactorStage(this.game);
 		screen = SCREEN.GAME;
 		
 		txt_background = new Texture(Gdx.files.internal("textures/bg_alt.png"));
@@ -60,7 +66,7 @@ public class GameWorld {
 		button_hover_t = new Texture(Gdx.files.internal("textures/button_hover.png"));
 		
 		font = new BitmapFont();
-		font.setColor(new Color(0.5f, 0.45f, 0.5f, 1));
+		font.setColor(new Color(0.1f, 0.42f, 0.78f, 1f)); // Buttons' font
 		
 		for(int i = 0; i < button_hover.length; i++) {
 			button_hover[i] = false;
@@ -117,17 +123,29 @@ public class GameWorld {
 	}
 	
 	public void update(float tick) {
-		switch(screen) {
-			case GAME:
-				gameStage.update(tick);
-			break;
-			default:
-			break;		
-		}
 		
 		roll(tick);
 		buttons(tick);
 		factors(tick);
+		
+		if(Keyboard.isDown(Keyboard.END)) {
+			Metrics.HUNGER = 100f;
+			Metrics.WAR = 100f;
+			Metrics.HAPPINESS = 0f;
+			winStage.updateData();
+			screen = SCREEN.END;
+		}
+		
+		switch(screen) {
+		case GAME:
+			hintStage.update(tick);
+			factorStage.update(tick);
+			break;
+		case END:
+			winStage.update(tick);
+			break;
+		default: break;
+		}
 	}
 	
 	private void roll(float tick) {
@@ -143,9 +161,6 @@ public class GameWorld {
 			if(rollingTimer > 0) {
 				rollingTimer -= tick;
 			}
-			if(Keyboard.isDown(Keyboard.ROLL)) {
-				startRolling();
-			}
 		}
 	}
 	
@@ -158,7 +173,9 @@ public class GameWorld {
 		currentFactor = factors[(int) (Math.random() * factors.length)];
 		
 		evolve(oldFactor, currentFactor);
+		verifyWinCondition();
 		currentFactor.toggle(true);
+		factorStage.updateData(currentFactor);
 	}
 	
 	private void startRolling() {
@@ -182,6 +199,15 @@ public class GameWorld {
 		} else if(button_hover[1] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 			Gdx.app.exit();
 		}
+		
+		hintStage.showing = false;
+		for(int i = 0; i < factors.length; i++) {
+			FactorEntity f = factors[i];
+			if(mX > f.getX() && mX < f.getX() + 96 && mY > f.getY() && mY < f.getY() + 96) {
+				hintStage.updateData(f);
+				hintStage.showing = true;
+			}
+		}
 	}
 	
 	private void factors(float tick) {
@@ -190,27 +216,17 @@ public class GameWorld {
 		}
 	}
 	
-	public void render() {		
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-		
-		batch.begin();
-		
-		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
-		batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
-				
-		for(int i = 0; i < factors.length; i++) {
-			factors[i].render(batch);						
+	private void renderButtons() {
+		if(screen == SCREEN.GAME) {
+			if(button_hover[0])
+				batch.draw(big_button_hover, Game.WIDTH/1.34f, Game.HEIGHT/1.155f, 96, 96);
+			else
+				batch.draw(big_button, Game.WIDTH/1.34f, Game.HEIGHT/1.155f, 96, 96);
+			if(rollingTimer > 0)
+				font.draw(batch, "Advance\n    (" + (int)rollingTimer + ")",  Game.WIDTH/1.314f, Game.HEIGHT/1.050f);
+			else
+				font.draw(batch, "Roll", Game.WIDTH/1.299f, Game.HEIGHT/1.064f);
 		}
-		
-		if(button_hover[0])
-			batch.draw(big_button_hover, Game.WIDTH/1.34f, Game.HEIGHT/1.155f, 96, 96);
-		else
-			batch.draw(big_button, Game.WIDTH/1.34f, Game.HEIGHT/1.155f, 96, 96);
-		if(rollingTimer > 0)
-			font.draw(batch, "Advance\n    (" + (int)rollingTimer + ")",  Game.WIDTH/1.314f, Game.HEIGHT/1.050f);
-		else
-			font.draw(batch, "Roll", Game.WIDTH/1.299f, Game.HEIGHT/1.064f);
 		
 		if(button_hover[1])
 			batch.draw(big_button_hover, 0, 0, 64, 64);
@@ -218,24 +234,41 @@ public class GameWorld {
 			batch.draw(big_button, 0, 0, 64, 64);
 		font.draw(batch, "Quit", 64/3.3f, 64/1.58f);
 		
-		if(button_hover[3])
-			batch.draw(big_button_hover, 0 + 64, 0, 64, 64);
-		else
-			batch.draw(big_button, 0 + 64, 0, 64, 64);
-		font.draw(batch, "Help",  0 + 64 + 64/3.3f, 64/1.58f);
-		
+		if(screen == SCREEN.GAME) {
+			if(button_hover[3])
+				batch.draw(big_button_hover, 0 + 64, 0, 64, 64);
+			else
+				batch.draw(big_button, 0 + 64, 0, 64, 64);
+			font.draw(batch, "Help",  0 + 64 + 64/3.3f, 64/1.58f);
+		}
+	}
+	
+	public void render() {
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+
+		batch.begin();
+		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
 		batch.end();
 		
-		Metrics.render(batch);
-		
-		/*switch(screen) {
-		case GAME:
-			gameStage.render();
-		break;
-		default:
-		break;
-		}*/
-		
+		if(screen == SCREEN.GAME) {
+			batch.begin();
+			batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
+			for(int i = 0; i < factors.length; i++) {
+				factors[i].render(batch);						
+			}
+			batch.end();
+
+			Metrics.render(batch);
+			hintStage.render();
+			factorStage.render();
+		} else if(screen == SCREEN.END) {
+			winStage.render();	
+		}
+
+		batch.begin();
+		renderButtons();
+		batch.end();
 	}
 	
 	private void evolve(FactorEntity old, FactorEntity current) {
@@ -279,11 +312,8 @@ public class GameWorld {
 			}
 			if(f == FACTORS.NUCLEAR_ENERGY) {
 				Metrics.HEALTH_D			+= a * -0.1f;
-				Metrics.FOOD_D				+= a * 0.2;
 				Metrics.TECH_D				+= a * 0.3f;
 				Metrics.ENV_D				+= a * -0.1f;
-				Metrics.SPACE_D				+= a * 0.5f;
-				Metrics.EDUCATION_D			+= a * 0.1f;
 				Metrics.ENERGY_D			+= a * 1.1f;
 				Metrics.PEACE_D				+= a * -0.5f;
 			}
@@ -299,6 +329,7 @@ public class GameWorld {
 				Metrics.SPACE_D				+= a * 0.8f;
 				Metrics.JOBS_D				+= a * 0.2f;
 				Metrics.ENERGY_D			+= a * 0.86;
+				Metrics.ENV_D				+= a * 1.13;
 			}
 			if(f == FACTORS.VACCINES) {
 				Metrics.HEALTH_D			+= a * 1.2f;
@@ -344,6 +375,7 @@ public class GameWorld {
 				Metrics.ENV_D				+= a * 0.3;
 				Metrics.VODKA_D				+= a * -5.2f;
 				Metrics.PEACE_D				+= a * -0.5f;
+				Metrics.LAW_D				+= a * -0.78f;
 			}
 			if(f == FACTORS.BAN_ON_DRUGS) {
 				Metrics.HEALTH_D			+= a * 1.7f;
@@ -404,8 +436,6 @@ public class GameWorld {
 				Metrics.LOVE_D				+= a * 1.0f;
 				Metrics.PEACE_D				+= a * 3.3f;
 				Metrics.LAW_D				+= a * -1.1f;
-				Metrics.VODKA_D				+= a * 0.1f;
-				Metrics.HEALTH_D			+= a * -0.3f;
 				Metrics.SPACE_D				+= a * 0.5;
 			}
 			if(f == FACTORS.GENDER_EQUALITY) {
@@ -541,7 +571,7 @@ public class GameWorld {
 		Metrics.PEACE			+= Metrics.PEACE_D;
 		Metrics.LOVE			+= Metrics.LOVE_D;
 		
-		System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
+		//System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
 		
 		if(Metrics.HEALTH > 100f) Metrics.HEALTH = 100f;
 		if(Metrics.HEALTH < 0f)   Metrics.HEALTH = 0f;
@@ -585,9 +615,73 @@ public class GameWorld {
 		if(Metrics.LOVE > 100f) Metrics.LOVE = 100f;
 		if(Metrics.LOVE < 0f)   Metrics.LOVE = 0f;
 		
+		Metrics.HAPPINESS_D += (Metrics.HEALTH-40) * 0.007f;
+		Metrics.HAPPINESS_D += (Metrics.FOOD-60) * 0.006f;
+		Metrics.HAPPINESS_D += (Metrics.TECH-30) * 0.0008f;
+		Metrics.HAPPINESS_D += (Metrics.ENV-40) * 0.003f;
+		Metrics.HAPPINESS_D += (Metrics.SPACE-10) * 0.0005f;
+		Metrics.HAPPINESS_D += -(Metrics.DRUG-65) * 0.001f;
+		Metrics.HAPPINESS_D += (Metrics.EDUCATION-45) * 0.001f;
+		Metrics.HAPPINESS_D += (Metrics.JOBS-60) * 0.003f;
+		Metrics.HAPPINESS_D += (Metrics.INFRASTRUCTURE-35) * 0.0006f;
+		Metrics.HAPPINESS_D += (Metrics.VODKA-10) * 0.003f;
+		Metrics.HAPPINESS_D += (Metrics.WIFI-15) * 0.0007f;
+		Metrics.HAPPINESS_D += (Metrics.LAW-45) * 0.005f;
+		Metrics.HAPPINESS_D += (Metrics.PEACE-70) * 0.001f;
+		Metrics.HAPPINESS_D += (Metrics.LOVE-55) * 0.009f;
 		
-		Metrics.showDeltas = true;
-			
+		Metrics.HUNGER_D += -(Metrics.HEALTH-50) * 0.01f;
+		Metrics.HUNGER_D += -(Metrics.FOOD-85) * 0.016f;
+		Metrics.HUNGER_D += -(Metrics.TECH-30) * 0.0001f;
+		Metrics.HUNGER_D += -(Metrics.ENV-35) * 0.003f;
+		Metrics.HUNGER_D += -(Metrics.SPACE-5) * 0.0002f;
+		Metrics.HUNGER_D += (Metrics.DRUG-15) * 0.0004f;
+		Metrics.HUNGER_D += -(Metrics.EDUCATION-10) * 0.0001f;
+		Metrics.HUNGER_D += -(Metrics.JOBS-35) * 0.007f;
+		Metrics.HUNGER_D += -(Metrics.INFRASTRUCTURE-65) * 0.002f;
+		Metrics.HUNGER_D += -(Metrics.VODKA-30) * 0.003f;
+		Metrics.HUNGER_D += -(Metrics.WIFI-5) * 0.0007f;
+		Metrics.HUNGER_D += -(Metrics.LAW-10) * 0.0005f;
+		Metrics.HUNGER_D += -(Metrics.PEACE-36) * 0.0001f;
+		Metrics.HUNGER_D += -(Metrics.LOVE-10) * 0.0003f;
+		
+		Metrics.WAR_D += -(Metrics.HEALTH-40) * 0.001f;
+		Metrics.WAR_D += -(Metrics.FOOD-40) * 0.001f;
+		Metrics.WAR_D += -(Metrics.TECH-40) * 0.01f;
+		Metrics.WAR_D += -(Metrics.ENV-70) * 0.014f;
+		Metrics.WAR_D += -(Metrics.SPACE-30) * 0.0002f;
+		Metrics.WAR_D += (Metrics.DRUG-70) * 0.004f;
+		Metrics.WAR_D += -(Metrics.EDUCATION-75) * 0.005f;
+		Metrics.WAR_D += -(Metrics.JOBS-75) * 0.007f;
+		Metrics.WAR_D += -(Metrics.INFRASTRUCTURE-62) * 0.001f;
+		Metrics.WAR_D += -(Metrics.VODKA-10) * 0.003f;
+		Metrics.WAR_D += -(Metrics.WIFI-10) * 0.0007f;
+		Metrics.WAR_D += -(Metrics.LAW-45) * 0.005f;
+		Metrics.WAR_D += -(Metrics.PEACE-90) * 0.07f;
+		Metrics.WAR_D += -(Metrics.LOVE-71) * 0.013f;
+		
+		Metrics.HAPPINESS		+= Metrics.HAPPINESS_D;
+		Metrics.HUNGER			+= Metrics.HUNGER_D;
+		Metrics.WAR				+= Metrics.WAR_D;
+		
+		if(Metrics.HAPPINESS > 100f) Metrics.HAPPINESS = 100f;
+		if(Metrics.HAPPINESS < 0f)   Metrics.HAPPINESS = 0f;
+		
+		if(Metrics.HUNGER > 100f) Metrics.HUNGER = 100f;
+		if(Metrics.HUNGER < 0f)   Metrics.HUNGER = 0f;
+		
+		if(Metrics.WAR > 100f) Metrics.WAR = 100f;
+		if(Metrics.WAR < 0f)   Metrics.WAR = 0f;
+		
+		Metrics.showDeltas = true;	
+	}
+	
+	private void verifyWinCondition() {
+		if((Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f)
+				|| (Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 0f && Metrics.WAR >= 0f)) {
+			screen = SCREEN.END;
+			winStage.updateData();
+		}	
 	}
 	
 }

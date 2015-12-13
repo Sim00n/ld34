@@ -1,0 +1,51 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.puzdrowski.decision.Game;
+
+public class WinStage extends StageWrapper {
+
+	Window window;
+	
+	public WinStage(Game game) {
+		super(game);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		window = new Window("Congratulations! You've won!", skin);
+		window.setSize(1000, 400);
+		
+		Table table = new Table();
+		
+		Label message = new Label("test\n\n", skin);
+		Label stats_l = new Label("test2\n\ntest2", skin);
+		Label stats_r = new Label("test3\n\ntest3", skin);
+
+		stats_l.setWidth(500f);
+		stats_l.setWrap(true);
+		stats_r.setWidth(500f);
+		stats_r.setWrap(true);
+
+		table.add(message);
+		table.row();
+		table.add(stats_l).width(300f);
+		table.add(stats_r),width(300f);
+		
+		window.add(table);
+		stage.addActor(window);
+	}
+}
+
+
+
+
+
+
+
+
+

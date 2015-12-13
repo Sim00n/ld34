@@ -1,0 +1,71 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.utils.Align;
+import com.puzdrowski.decision.Game;
+
+public class WinStage extends StageWrapper {
+
+	Window window;
+	
+	public WinStage(Game game) {
+		super(game);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		window = new Window("Congratulations! You've won!", skin);
+		window.setSize(1000, 400);
+		
+		Table table = new Table();
+		HorizontalGroup hz = new HorizontalGroup();
+		
+		hz.setWidth(1000f);
+		
+		Label message = new Label("", skin);
+		Label stats_l = new Label("", skin);
+		Label stats_r = new Label("", skin);
+
+		stats_l.setWidth(500f);
+		stats_l.setWrap(true);
+		stats_r.setWidth(500f);
+		stats_r.setWrap(true);
+		
+		hz.addActor(stats_l);
+		hz.addActor(stats_r);
+		table.add(message).width(1000f);
+		table.add(hz);
+		
+		window.add(table);
+		stage.addActor(window);
+		
+		text = new Label("123", skin);
+		text.setAlignment(Align.center);
+		text.setWrap(true);
+		text.setWidth(300);
+		t.add(text).width(300f);
+				
+		stats = new Label("123", skin);
+		stats.setWrap(true);
+		stats.setWidth(200);
+		stats.setAlignment(Align.center);
+		t2.add(stats).width(200f).padLeft(30f);
+	}
+}
+
+
+
+
+
+
+
+
+
