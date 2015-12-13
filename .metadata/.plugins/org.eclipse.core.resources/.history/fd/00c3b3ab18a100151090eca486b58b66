@@ -1,0 +1,147 @@
+package com.puzdrowski.decision.entity;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.puzdrowski.decision.Game;
+
+public class FactorEntity extends Entity {
+
+	private boolean isCurrent;
+	private boolean isAffective;
+	private Texture hoverTexture;
+	private Texture icon;
+	private FACTORS factor;
+	
+	//33
+	public static enum FACTORS {
+		POPULATION_GROWTH, RELIGIOUS_FREEDOM, CLIMATE_WARMING, MILITARIZATION,
+		NASA, NUCLEAR_ENERGY, QUANTUM_COMPUTING, ELECTRIC_CARS, VACCINES, STD_PREVENTION,
+		HIGH_UNIVERSITY_COST, GLOBAL_POLICE, INDUSTRY_REGULATION, UNITED_NATIONS,
+		BAN_ON_ALCOHOL, BAN_ON_DRUGS, MEDICAL_RESEARCH, FISHING_QUOTAS, ANIMAL_PROTECTION,
+		INFO_FREEDOM, MINIMUM_WAGE, GENEVA_CONVENTION, BAN_ON_SMOKING, CONFORMITY, DIVERSITY,
+		GENDER_EQUALITY, MARRIAGE_EQUALITY, CIA_PRISONS, POPULATION_TRACKING, CCTV, 
+		ALCOHOL_TAX, CORPORATION_TAX, PROPERTY_TAX
+	};
+	
+	public FactorEntity(Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor) {
+		super(texture, theta, type, i);
+		this.factor = factor;
+		this.isCurrent = false;
+		this.isAffective= false;
+		
+		if(factor == FACTORS.POPULATION_GROWTH)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.RELIGIOUS_FREEDOM)
+			icon = new Texture(Gdx.files.internal("textures/icons/religion.png"));
+		else if(factor == FACTORS.CLIMATE_WARMING)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.MILITARIZATION)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.NASA)
+			icon = new Texture(Gdx.files.internal("textures/icons/rocket.png"));
+		else if(factor == FACTORS.NUCLEAR_ENERGY)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.QUANTUM_COMPUTING)
+			icon = new Texture(Gdx.files.internal("textures/icons/tech.png"));
+		else if(factor == FACTORS.ELECTRIC_CARS)
+			icon = new Texture(Gdx.files.internal("textures/icons/car.png"));
+		else if(factor == FACTORS.VACCINES)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.STD_PREVENTION)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.HIGH_UNIVERSITY_COST)
+			icon = new Texture(Gdx.files.internal("textures/icons/education.png"));
+		else if(factor == FACTORS.GLOBAL_POLICE)
+			icon = new Texture(Gdx.files.internal("textures/icons/police.png"));
+		else if(factor == FACTORS.INDUSTRY_REGULATION)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.UNITED_NATIONS)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.BAN_ON_ALCOHOL)
+			icon = new Texture(Gdx.files.internal("textures/icons/alcohol.png"));
+		else if(factor == FACTORS.BAN_ON_DRUGS)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.MEDICAL_RESEARCH)
+			icon = new Texture(Gdx.files.internal("textures/icons/health.png"));
+		else if(factor == FACTORS.FISHING_QUOTAS)
+			icon = new Texture(Gdx.files.internal("textures/icons/fishing.png"));
+		else if(factor == FACTORS.ANIMAL_PROTECTION)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.INFO_FREEDOM)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.MINIMUM_WAGE)
+			icon = new Texture(Gdx.files.internal("textures/icons/money.png"));
+		else if(factor == FACTORS.GENEVA_CONVENTION)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.BAN_ON_SMOKING)
+			icon = new Texture(Gdx.files.internal("textures/icons/smoking.png"));
+		else if(factor == FACTORS.CONFORMITY)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.DIVERSITY)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.GENDER_EQUALITY)
+			icon = new Texture(Gdx.files.internal("textures/icons/gender.png"));
+		else if(factor == FACTORS.MARRIAGE_EQUALITY)
+			icon = new Texture(Gdx.files.internal("textures/icons/marriage.png"));
+		else if(factor == FACTORS.CIA_PRISONS)
+			icon = new Texture(Gdx.files.internal("textures/icons/handcuffs.png"));
+		else if(factor == FACTORS.POPULATION_TRACKING)
+			icon = new Texture(Gdx.files.internal("textures/icons/gps.png"));
+		else if(factor == FACTORS.CCTV)
+			icon = new Texture(Gdx.files.internal("textures/icons/cctv.png"));
+		else if(factor == FACTORS.ALCOHOL_TAX)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.CORPORATION_TAX)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else if(factor == FACTORS.PROPERTY_TAX)
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		else
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+		
+		
+		this.hoverTexture = hoverTexture;
+	}
+	
+	public void update(float tick, float rollingSpeed) {
+		super.update(tick);
+
+		if(type == TYPE.OUTER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 550);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 280);
+		} else if(type == TYPE.MIDDLE) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 340);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 180);
+		} else if(type == TYPE.INNER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 130);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 100);
+		}
+	}
+	
+	@Override
+	public void render(Batch batch) {
+		if(isCurrent) {
+			batch.draw(hoverTexture, x, y, 96, 96);
+			batch.draw(icon, x+15, y+12, 64, 64);
+		} else {
+			batch.draw(texture, x, y, 80, 80);
+			batch.draw(icon, x+12, y+15, 54, 54);
+		}
+	}
+	
+	public void toggle(boolean tog) {
+		isCurrent = tog;
+	}
+	
+	public void toggle() {
+		isCurrent = !isCurrent;
+	}
+	
+	public void toggleAffect(boolean tog) {
+		isAffective = tog;
+	}
+	
+	public void toggleAffect() {
+		isAffective = !isAffective;
+	}
+}

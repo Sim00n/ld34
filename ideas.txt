@@ -6,7 +6,7 @@
 = ================================================== =
 = My goal: To learn LibGDX (again) 					 =
 = ================================================== =
-= Name: 				          					 =
+= Name: Decision  	(PL: Decyzja) 					 =
 = ================================================== =
 
 Theme interpretation:
@@ -115,13 +115,12 @@ FINAL IDEA:
 
 
  TO-DO:
- - Add factor types to each individual factors.
+ [x] Add factor types to each individual factors.
  - Code factors' logic.
- - Prepare and code pictures on each factors.
- - Implement metrics' delta saving and displaying after each turn
+ [x] Prepare and code pictures on each factors.
+ [x] Implement metrics' delta saving and displaying after each turn
  - Implement win condition
  - Music + Sounds
  - Help
- - Actual switch button
- - Better fonts (if enough time)?
- - 
+ [x] Actual switch button
+ - Better fonts (if enough time)? 

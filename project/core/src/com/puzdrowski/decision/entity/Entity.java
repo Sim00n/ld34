@@ -13,10 +13,10 @@ public abstract class Entity {
 	protected TYPE type;
 	protected int order;
 	
-	public Entity(Texture texture, int x, int y, float theta, TYPE type, int order) {
+	public Entity(Texture texture, float theta, TYPE type, int order) {
 		this.texture = texture;
-		this.x = x;
-		this.y = y;
+		this.x = 0;
+		this.y = 0;
 		this.theta = theta;
 		this.type = type;
 		this.order = order;

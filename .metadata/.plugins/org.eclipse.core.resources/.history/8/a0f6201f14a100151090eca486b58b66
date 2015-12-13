@@ -1,0 +1,64 @@
+package com.puzdrowski.decision.entity;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.puzdrowski.decision.Game;
+
+public class FactorEntity extends Entity {
+
+	private boolean isCurrent;
+	private boolean isAffective;
+	private Texture hoverTexture;
+	private Texture icon;
+	
+	public FactorEntity(Texture texture, int x, int y, float theta, TYPE type, int i, Texture hoverTexture) {
+		super(texture, x, y, theta, type, i);
+		this.isCurrent = false;
+		this.isAffective= false;
+		icon = new Texture(Gdx.files.internal("textures/icons/education.png"));
+		this.hoverTexture = hoverTexture;
+	}
+
+	public void update(float tick, float rollingSpeed) {
+		super.update(tick);
+
+		if(type == TYPE.OUTER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 550);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 280);
+		} else if(type == TYPE.MIDDLE) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 340);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 180);
+		} else if(type == TYPE.INNER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 130);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 100);
+		}
+	}
+	
+	@Override
+	public void render(Batch batch) {
+		if(isCurrent) {
+			batch.draw(hoverTexture, x, y, 96, 96);
+			batch.draw(icon, x+15, y+12, 64, 64);
+		} else {
+			batch.draw(texture, x, y, 80, 80);
+			batch.draw(icon, x+12, y+15, 54, 54);
+		}
+	}
+	
+	public void toggle(boolean tog) {
+		isCurrent = tog;
+	}
+	
+	public void toggle() {
+		isCurrent = !isCurrent;
+	}
+	
+	public void toggleAffect(boolean tog) {
+		isAffective = tog;
+	}
+	
+	public void toggleAffect() {
+		isAffective = !isAffective;
+	}
+}
