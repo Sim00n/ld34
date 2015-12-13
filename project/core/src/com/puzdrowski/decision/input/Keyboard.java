@@ -5,9 +5,10 @@ public class Keyboard {
 	public static boolean[] keys;
 	public static boolean[] pkeys;
 	
-	public static final int NUM_KEYS = 1;
+	public static final int NUM_KEYS = 2;
 	
 	public static final int END = 0;
+	public static final int HELP = 1;
 	
 	static {
 		keys = new boolean[NUM_KEYS];

@@ -120,10 +120,10 @@ FINAL IDEA:
  [x] Prepare and code pictures on each factors.
  [x] Implement metrics' delta saving and displaying after each turn
  [x] Implement win condition
- - Music + Sounds
+ [x] Music + Sounds
  [x] Help
  [x] Actual switch button
  [x] upper/lower bound checking when adding deltas to metrics
  [x] item descriptions
- - balance
+ [x] balance
  [x] selecting on/off state

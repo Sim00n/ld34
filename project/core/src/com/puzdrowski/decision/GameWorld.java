@@ -2,6 +2,8 @@ package com.puzdrowski.decision;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +29,9 @@ public class GameWorld {
 
 	private Texture txt_background, board, button, big_button, big_button_hover, button_hover_t, help;
 	private BitmapFont font;
+	public static Sound roulette, button_sound, click_sound;
+	public static Music ambient;
+	
 	
 	private enum SCREEN {WELCOME, GAME, END};
 	private SCREEN screen;
@@ -68,6 +73,13 @@ public class GameWorld {
 		button_hover_t = new Texture(Gdx.files.internal("textures/button_hover.png"));
 		help = new Texture(Gdx.files.internal("textures/help.png"));
 		
+		roulette = Gdx.audio.newSound(Gdx.files.internal("audio/roulette.mp3"));
+		button_sound = Gdx.audio.newSound(Gdx.files.internal("audio/button.wav"));
+		click_sound = Gdx.audio.newSound(Gdx.files.internal("audio/click.mp3"));
+		ambient = Gdx.audio.newMusic(Gdx.files.internal("audio/ambient.mp3"));
+		ambient.setLooping(true);
+		ambient.play();
+		
 		font = new BitmapFont();
 		font.setColor(new Color(0.1f, 0.42f, 0.78f, 1f)); // Buttons' font
 		
@@ -77,50 +89,50 @@ public class GameWorld {
 		
 		float theta = 0.0f;
 		theta = 360f/22f;
-		factors[0] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 0, FACTORS.ALCOHOL_TAX);
-		factors[1] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 1, FACTORS.ANIMAL_PROTECTION);
-		factors[2] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 2, FACTORS.BAN_ON_ALCOHOL);
-		factors[3] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 3, FACTORS.BAN_ON_DRUGS);
-		factors[4] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 4, FACTORS.BAN_ON_SMOKING);
-		factors[5] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 5, FACTORS.CCTV);
-		factors[6] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 6, FACTORS.CIA_PRISONS);
-		factors[7] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 7, FACTORS.CLIMATE_WARMING);
-		factors[8] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 8, FACTORS.CONFORMITY);
-		factors[9] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 9, FACTORS.CORPORATION_TAX);
-		factors[10] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 10, FACTORS.DIVERSITY);
-		factors[11] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 11, FACTORS.ELECTRIC_CARS);
-		factors[12] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 12, FACTORS.FISHING_QUOTAS);
-		factors[13] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 13, FACTORS.GENDER_EQUALITY);
-		factors[14] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 14, FACTORS.GENEVA_CONVENTION);
-		factors[15] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 15, FACTORS.GLOBAL_POLICE);
-		factors[16] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 16, FACTORS.HIGH_UNIVERSITY_COST);
-		factors[17] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 17, FACTORS.INDUSTRY_REGULATION);
-		factors[18] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 18, FACTORS.INFO_FREEDOM);
-		factors[19] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 19, FACTORS.MARRIAGE_EQUALITY);
-		factors[20] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 20, FACTORS.MEDICAL_RESEARCH);
-		factors[21] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 21, FACTORS.MILITARIZATION);
+		factors[0] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 0, FACTORS.ALCOHOL_TAX, true);
+		factors[1] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 1, FACTORS.ANIMAL_PROTECTION, false);
+		factors[2] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 2, FACTORS.BAN_ON_ALCOHOL, false);
+		factors[3] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 3, FACTORS.BAN_ON_DRUGS, false);
+		factors[4] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 4, FACTORS.BAN_ON_SMOKING, false);
+		factors[5] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 5, FACTORS.CCTV, true);
+		factors[6] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 6, FACTORS.CIA_PRISONS, false);
+		factors[7] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 7, FACTORS.CLIMATE_WARMING, true);
+		factors[8] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 8, FACTORS.CONFORMITY, true);
+		factors[9] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 9, FACTORS.CORPORATION_TAX, false);
+		factors[10] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 10, FACTORS.DIVERSITY, true);
+		factors[11] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 11, FACTORS.ELECTRIC_CARS, false);
+		factors[12] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 12, FACTORS.FISHING_QUOTAS, false);
+		factors[13] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 13, FACTORS.GENDER_EQUALITY, false);
+		factors[14] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 14, FACTORS.GENEVA_CONVENTION, true);
+		factors[15] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 15, FACTORS.GLOBAL_POLICE, false);
+		factors[16] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 16, FACTORS.HIGH_UNIVERSITY_COST, true);
+		factors[17] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 17, FACTORS.INDUSTRY_REGULATION, false);
+		factors[18] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 18, FACTORS.INFO_FREEDOM, true);
+		factors[19] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 19, FACTORS.MARRIAGE_EQUALITY, false);
+		factors[20] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 20, FACTORS.MEDICAL_RESEARCH, true);
+		factors[21] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 21, FACTORS.MILITARIZATION, false);
 		
 		theta = 360f/12f;
-		factors[22] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 0, FACTORS.MINIMUM_WAGE);
-		factors[23] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 1, FACTORS.NASA);
-		factors[24] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 2, FACTORS.NUCLEAR_ENERGY);
-		factors[25] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 3, FACTORS.POPULATION_GROWTH);
-		factors[26] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 4, FACTORS.POPULATION_TRACKING);
-		factors[27] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 5, FACTORS.PROPERTY_TAX);
-		factors[28] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 6, FACTORS.QUANTUM_COMPUTING);
-		factors[29] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 7, FACTORS.RELIGIOUS_FREEDOM);
-		factors[30] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 8, FACTORS.STD_PREVENTION);
-		factors[31] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 9, FACTORS.UNITED_NATIONS);
-		factors[32] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 10, FACTORS.VACCINES);
-		factors[33] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 11, FACTORS.HIGH_UNEMPLOYMENT);
+		factors[22] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 0, FACTORS.MINIMUM_WAGE, true);
+		factors[23] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 1, FACTORS.NASA, false);
+		factors[24] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 2, FACTORS.NUCLEAR_ENERGY, false);
+		factors[25] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 3, FACTORS.POPULATION_GROWTH, false);
+		factors[26] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 4, FACTORS.POPULATION_TRACKING, false);
+		factors[27] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 5, FACTORS.PROPERTY_TAX, false);
+		factors[28] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 6, FACTORS.QUANTUM_COMPUTING, false);
+		factors[29] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 7, FACTORS.RELIGIOUS_FREEDOM,false);
+		factors[30] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 8, FACTORS.STD_PREVENTION, false);
+		factors[31] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 9, FACTORS.UNITED_NATIONS, false);
+		factors[32] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 10, FACTORS.VACCINES, false);
+		factors[33] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 11, FACTORS.HIGH_UNEMPLOYMENT, false);
 				
 		theta = 360f/6f;
-		factors[34] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 0, FACTORS.UTILITY_TAX);
-		factors[35] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 1, FACTORS.OPEN_TRADE);
-		factors[36] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 2, FACTORS.RENEWABLE_ENERGY);
-		factors[37] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 3, FACTORS.SEWER_TREATMENT);
-		factors[38] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 4, FACTORS.EPIDEMICS);
-		factors[39] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 5, FACTORS.DISASTER_PREVENTION);
+		factors[34] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 0, FACTORS.UTILITY_TAX, true);
+		factors[35] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 1, FACTORS.OPEN_TRADE, true);
+		factors[36] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 2, FACTORS.RENEWABLE_ENERGY, false);
+		factors[37] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 3, FACTORS.SEWER_TREATMENT, false);
+		factors[38] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 4, FACTORS.EPIDEMICS, false);
+		factors[39] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 5, FACTORS.DISASTER_PREVENTION, false);
 		
 		//endRolling();
 	}
@@ -136,6 +148,10 @@ public class GameWorld {
 			Metrics.HAPPINESS = 0f;
 			winStage.updateData();
 			screen = SCREEN.END;
+		}
+		if(Keyboard.isDown(Keyboard.HELP)) {
+			button_sound.play();
+			displayHelp = !displayHelp;
 		}
 		
 		switch(screen) {
@@ -156,7 +172,7 @@ public class GameWorld {
 			rollingDamping *= ROLLING_DAMPING_DAMPING;
 			if(rollingSpeed <= ROLLING_LIMIT) {
 				rolling = false;
-				rollingTimer = 5.0f;
+				rollingTimer = 3.0f;
 				endRolling();
 			}
 		} else {
@@ -182,7 +198,9 @@ public class GameWorld {
 	}
 	
 	private void startRolling() {
-		if(rollingTimer <= 0 && !rolling) {
+		if(rollingTimer <= 0 && !rolling && !factorStage.showing) {
+			roulette.play();
+			
 			rolling = true;
 			rollingSpeed = 500.0f;
 			rollingDamping = -3.0f;
@@ -198,11 +216,14 @@ public class GameWorld {
 		button_hover[3] = (mX > 0 + 64 && mX < 0 + 64 + 64 && mY > 0 && mY < 164);
 		
 		if(button_hover[0] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
-			startRolling();
+			if(!displayHelp)
+				startRolling();
 		} else if(button_hover[1] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
+			click_sound.play();
 			Gdx.app.exit();
 		} else if(button_hover[3] && Gdx.input.isButtonPressed(Input.Keys.LEFT)) {
 			if(helpButtonTimer == 0f) {
+				button_sound.play();
 				displayHelp = !displayHelp;
 				helpButtonTimer = 0.1f;
 			}
@@ -263,29 +284,37 @@ public class GameWorld {
 
 		batch.begin();
 		batch.draw(txt_background, 0f, 0f, Game.WIDTH, Game.HEIGHT);
+		if(screen == SCREEN.GAME) {
+			batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
+		}
 		batch.end();
 		
 		if(screen == SCREEN.GAME) {
 			batch.begin();
-			batch.draw(board, 0, Game.HEIGHT - 150, Game.WIDTH, 250);
-			for(int i = 0; i < factors.length; i++) {
+			for(int i = 0; i < factors.length; i++) { 
 				factors[i].render(batch);						
 			}
+			renderButtons();
 			batch.end();
 
 			Metrics.render(batch);
-			hintStage.render();
+			
+			if(!factorStage.showing && !displayHelp)
+				hintStage.render();
+			
 			factorStage.render();
 		} else if(screen == SCREEN.END) {
+			batch.begin();
+			renderButtons();
+			batch.end();
 			winStage.render();	
 		}
 
-		batch.begin();
 		if(displayHelp) {
+			batch.begin();
 			batch.draw(help, 0f, 0f, Game.WIDTH, Game.HEIGHT);
+			batch.end();
 		}
-		renderButtons();
-		batch.end();
 	}
 	
 	private void evolve(FactorEntity old, FactorEntity current) {
@@ -303,7 +332,7 @@ public class GameWorld {
 				Metrics.ENERGY_D 			+= a * 0.3f;
 			}
 			if(f == FACTORS.RELIGIOUS_FREEDOM) {
-				Metrics.EDUCATION_D 		+= a * 5.4f;
+				Metrics.EDUCATION_D 		+= a * 2.4f;
 				Metrics.LAW_D 				+= a * 0.4f;
 				Metrics.PEACE_D 			+= a * 0.6f;
 			}
@@ -377,7 +406,7 @@ public class GameWorld {
 				Metrics.TECH_D				+= a * 0.2f;
 				Metrics.SPACE_D				+= a * -0.23f;
 				Metrics.JOBS_D				+= a * -0.53f;
-				Metrics.INFRASTRUCTURE_D	+= a * -9.3f;
+				Metrics.INFRASTRUCTURE_D	+= a * -1.3f;
 				Metrics.ENERGY_D			+= a * -0.2f;
 			}
 			if(f == FACTORS.UNITED_NATIONS) {
@@ -450,21 +479,21 @@ public class GameWorld {
 			}
 			if(f == FACTORS.DIVERSITY) {
 				Metrics.EDUCATION_D			+= a * 1.3f;
-				Metrics.LOVE_D				+= a * 1.0f;
+				Metrics.LOVE_D				+= a * 3.0f;
 				Metrics.PEACE_D				+= a * 3.3f;
 				Metrics.LAW_D				+= a * -1.1f;
 				Metrics.SPACE_D				+= a * 0.5;
 			}
 			if(f == FACTORS.GENDER_EQUALITY) {
 				Metrics.EDUCATION_D			+= a * 0.3f;
-				Metrics.LOVE_D				+= a * 2.0f;
+				Metrics.LOVE_D				+= a * 6.0f;
 				Metrics.PEACE_D				+= a * 1.3f;
 				Metrics.HEALTH_D			+= a * 0.3f;
 				Metrics.JOBS_D				+= a * 0.76f;
 			}
 			if(f == FACTORS.MARRIAGE_EQUALITY) {
 				Metrics.EDUCATION_D			+= a * 0.3f;
-				Metrics.LOVE_D				+= a * 3.0f;
+				Metrics.LOVE_D				+= a * 6.0f;
 				Metrics.PEACE_D				+= a * 2.0f;
 				Metrics.HEALTH_D			+= a * 0.1f;
 			}
@@ -514,7 +543,7 @@ public class GameWorld {
 				Metrics.HEALTH_D			+= a * 1.1f;
 				Metrics.JOBS_D				+= a * 0.65f;
 				Metrics.ENV_D				+= a * 0.93f;
-				Metrics.INFRASTRUCTURE_D	+= a * 5.3f;
+				Metrics.INFRASTRUCTURE_D	+= a * 3.3f;
 				Metrics.ENERGY_D			+= a * -0.3f;
 			}
 			if(f == FACTORS.OPEN_TRADE) {
@@ -587,7 +616,7 @@ public class GameWorld {
 		Metrics.LAW				+= Metrics.LAW_D;
 		Metrics.PEACE			+= Metrics.PEACE_D;
 		Metrics.LOVE			+= Metrics.LOVE_D;
-		
+				
 		//System.out.println(Metrics.HEALTH_D + ", " + Metrics.FOOD_D + ", " + Metrics.TECH_D + ", " + Metrics.ENV_D + ", " + Metrics.SPACE_D + ", " + Metrics.DRUG_D + ", " + Metrics.EDUCATION_D + ", " + Metrics.JOBS_D + ", " + Metrics.INFRASTRUCTURE_D + ", " + Metrics.VODKA_D + ", " + Metrics.WIFI_D + ", " + Metrics.ENERGY_D + ", " + Metrics.LAW_D + ", " + Metrics.PEACE_D + ", " + Metrics.LOVE_D);
 		
 		if(Metrics.HEALTH > 100f) Metrics.HEALTH = 100f;
@@ -632,50 +661,50 @@ public class GameWorld {
 		if(Metrics.LOVE > 100f) Metrics.LOVE = 100f;
 		if(Metrics.LOVE < 0f)   Metrics.LOVE = 0f;
 		
-		Metrics.HAPPINESS_D += (Metrics.HEALTH-40) * 0.007f;
-		Metrics.HAPPINESS_D += (Metrics.FOOD-60) * 0.006f;
-		Metrics.HAPPINESS_D += (Metrics.TECH-30) * 0.0008f;
-		Metrics.HAPPINESS_D += (Metrics.ENV-40) * 0.003f;
-		Metrics.HAPPINESS_D += (Metrics.SPACE-10) * 0.0005f;
-		Metrics.HAPPINESS_D += -(Metrics.DRUG-65) * 0.001f;
-		Metrics.HAPPINESS_D += (Metrics.EDUCATION-45) * 0.001f;
-		Metrics.HAPPINESS_D += (Metrics.JOBS-60) * 0.003f;
-		Metrics.HAPPINESS_D += (Metrics.INFRASTRUCTURE-35) * 0.0006f;
-		Metrics.HAPPINESS_D += (Metrics.VODKA-10) * 0.003f;
-		Metrics.HAPPINESS_D += (Metrics.WIFI-15) * 0.0007f;
-		Metrics.HAPPINESS_D += (Metrics.LAW-45) * 0.005f;
-		Metrics.HAPPINESS_D += (Metrics.PEACE-70) * 0.001f;
-		Metrics.HAPPINESS_D += (Metrics.LOVE-55) * 0.009f;
+		Metrics.HAPPINESS_D += (Metrics.HEALTH-20) * 0.007f;
+		Metrics.HAPPINESS_D += (Metrics.FOOD-30) * 0.006f;
+		Metrics.HAPPINESS_D += (Metrics.TECH-10) * 0.0008f;
+		Metrics.HAPPINESS_D += (Metrics.ENV-20) * 0.003f;
+		Metrics.HAPPINESS_D += (Metrics.SPACE-2) * 0.0005f;
+		Metrics.HAPPINESS_D += -(Metrics.DRUG-35) * 0.001f;
+		Metrics.HAPPINESS_D += (Metrics.EDUCATION-25) * 0.001f;
+		Metrics.HAPPINESS_D += (Metrics.JOBS-30) * 0.003f;
+		Metrics.HAPPINESS_D += (Metrics.INFRASTRUCTURE-25) * 0.0006f;
+		Metrics.HAPPINESS_D += (Metrics.VODKA-5) * 0.003f;
+		Metrics.HAPPINESS_D += (Metrics.WIFI-5) * 0.0007f;
+		Metrics.HAPPINESS_D += (Metrics.LAW-20) * 0.005f;
+		Metrics.HAPPINESS_D += (Metrics.PEACE-40) * 0.001f;
+		Metrics.HAPPINESS_D += (Metrics.LOVE-35) * 0.009f;
 		
-		Metrics.HUNGER_D += -(Metrics.HEALTH-50) * 0.01f;
-		Metrics.HUNGER_D += -(Metrics.FOOD-85) * 0.016f;
-		Metrics.HUNGER_D += -(Metrics.TECH-30) * 0.0001f;
+		Metrics.HUNGER_D += -(Metrics.HEALTH-30) * 0.01f;
+		Metrics.HUNGER_D += -(Metrics.FOOD-35) * 0.016f;
+		Metrics.HUNGER_D += -(Metrics.TECH-15) * 0.0001f;
 		Metrics.HUNGER_D += -(Metrics.ENV-35) * 0.003f;
 		Metrics.HUNGER_D += -(Metrics.SPACE-5) * 0.0002f;
 		Metrics.HUNGER_D += (Metrics.DRUG-15) * 0.0004f;
 		Metrics.HUNGER_D += -(Metrics.EDUCATION-10) * 0.0001f;
 		Metrics.HUNGER_D += -(Metrics.JOBS-35) * 0.007f;
-		Metrics.HUNGER_D += -(Metrics.INFRASTRUCTURE-65) * 0.002f;
-		Metrics.HUNGER_D += -(Metrics.VODKA-30) * 0.003f;
+		Metrics.HUNGER_D += -(Metrics.INFRASTRUCTURE-35) * 0.002f;
+		Metrics.HUNGER_D += -(Metrics.VODKA-10) * 0.003f;
 		Metrics.HUNGER_D += -(Metrics.WIFI-5) * 0.0007f;
 		Metrics.HUNGER_D += -(Metrics.LAW-10) * 0.0005f;
-		Metrics.HUNGER_D += -(Metrics.PEACE-36) * 0.0001f;
+		Metrics.HUNGER_D += -(Metrics.PEACE-16) * 0.0001f;
 		Metrics.HUNGER_D += -(Metrics.LOVE-10) * 0.0003f;
 		
-		Metrics.WAR_D += -(Metrics.HEALTH-40) * 0.001f;
-		Metrics.WAR_D += -(Metrics.FOOD-40) * 0.001f;
-		Metrics.WAR_D += -(Metrics.TECH-40) * 0.01f;
-		Metrics.WAR_D += -(Metrics.ENV-70) * 0.014f;
-		Metrics.WAR_D += -(Metrics.SPACE-30) * 0.0002f;
-		Metrics.WAR_D += (Metrics.DRUG-70) * 0.004f;
-		Metrics.WAR_D += -(Metrics.EDUCATION-75) * 0.005f;
-		Metrics.WAR_D += -(Metrics.JOBS-75) * 0.007f;
-		Metrics.WAR_D += -(Metrics.INFRASTRUCTURE-62) * 0.001f;
-		Metrics.WAR_D += -(Metrics.VODKA-10) * 0.003f;
-		Metrics.WAR_D += -(Metrics.WIFI-10) * 0.0007f;
-		Metrics.WAR_D += -(Metrics.LAW-45) * 0.005f;
-		Metrics.WAR_D += -(Metrics.PEACE-90) * 0.07f;
-		Metrics.WAR_D += -(Metrics.LOVE-71) * 0.013f;
+		Metrics.WAR_D += -(Metrics.HEALTH-20) * 0.001f;
+		Metrics.WAR_D += -(Metrics.FOOD-20) * 0.001f;
+		Metrics.WAR_D += -(Metrics.TECH-20) * 0.01f;
+		Metrics.WAR_D += -(Metrics.ENV-30) * 0.014f;
+		Metrics.WAR_D += -(Metrics.SPACE-10) * 0.0002f;
+		Metrics.WAR_D += (Metrics.DRUG-30) * 0.004f;
+		Metrics.WAR_D += -(Metrics.EDUCATION-30) * 0.005f;
+		Metrics.WAR_D += -(Metrics.JOBS-30) * 0.007f;
+		Metrics.WAR_D += -(Metrics.INFRASTRUCTURE-22) * 0.001f;
+		Metrics.WAR_D += -(Metrics.VODKA-3) * 0.003f;
+		Metrics.WAR_D += -(Metrics.WIFI-4) * 0.0007f;
+		Metrics.WAR_D += -(Metrics.LAW-15) * 0.005f;
+		Metrics.WAR_D += -(Metrics.PEACE-50) * 0.07f;
+		Metrics.WAR_D += -(Metrics.LOVE-45) * 0.013f;
 		
 		Metrics.HAPPINESS		+= Metrics.HAPPINESS_D;
 		Metrics.HUNGER			+= Metrics.HUNGER_D;
@@ -695,7 +724,7 @@ public class GameWorld {
 	
 	private void verifyWinCondition() {
 		if((Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f)
-				|| (Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 0f && Metrics.WAR >= 0f)) {
+				|| (Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 100f && Metrics.WAR >= 100f)) {
 			screen = SCREEN.END;
 			winStage.updateData();
 		}	

@@ -32,11 +32,11 @@ public class FactorEntity extends Entity {
 		OPEN_TRADE, RENEWABLE_ENERGY, SEWER_TREATMENT, EPIDEMICS, DISASTER_PREVENTION
 	};
 	
-	public FactorEntity(Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor) {
+	public FactorEntity(Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor, boolean active) {
 		super(texture, theta, type, i);
 		this.factor = factor;
 		this.isCurrent = false;
-		this.isAffective = false;
+		this.isAffective = active;
 		this.rolling = false;
 		
 		if(factor == FACTORS.POPULATION_GROWTH) {
@@ -48,7 +48,7 @@ public class FactorEntity extends Entity {
 			icon = new Texture(Gdx.files.internal("textures/icons/religion.png"));
 			title = "Religious Freedom";
 			desc = "Religion is important to many people. Freedom to believe whatever you want makes our student body feel safe. Naturally it also creates more peacefull relations withing different cultures.";
-			stats = "\n\nEducation: +5.4\nLaw: +0.4\nPeace: +0.6";
+			stats = "\n\nEducation: +2.4\nLaw: +0.4\nPeace: +0.6";
 		} else if(factor == FACTORS.CLIMATE_WARMING) {
 			icon = new Texture(Gdx.files.internal("textures/icons/weather.png"));
 			title = "Climate Warming";
@@ -103,7 +103,7 @@ public class FactorEntity extends Entity {
 			icon = new Texture(Gdx.files.internal("textures/icons/factory.png"));
 			title = "Heavy Industry Regulations";
 			desc = "Part of the reason we have many environmental problems is letting the industry loose. However because of the lack of regulations we were also able to invent many new technologies. There needs to be a balance.";
-			stats = "\n\nHealth: +1.9\nTech: +0.2\nSpace: -0.23\nJobs: -0.53\nInfrastructure: -9.3\nEnergy: -0.2";
+			stats = "\n\nHealth: +1.9\nTech: +0.2\nSpace: -0.23\nJobs: -0.53\nInfrastructure: -1.3\nEnergy: -0.2";
 		} else if(factor == FACTORS.UNITED_NATIONS) {
 			icon = new Texture(Gdx.files.internal("textures/icons/handshake.png"));
 			title = "United Nations";
@@ -163,17 +163,17 @@ public class FactorEntity extends Entity {
 			icon = new Texture(Gdx.files.internal("textures/icons/people.png"));
 			title = "Diversity";
 			desc = "Encouraging diversity promotes exchange of ideas and cultures. It is why you can eat Chicken Teriyaki in American and Pizza in Sweden. A mesh of cultures and religions however may cause tensions.";
-			stats = "\n\nEducation: +1.3\nLove: +1.0\nPeace: +3.3\nLaw: -1.1\nSpace: +0.5";
+			stats = "\n\nEducation: +1.3\nLove: +3.0\nPeace: +3.3\nLaw: -1.1\nSpace: +0.5";
 		} else if(factor == FACTORS.GENDER_EQUALITY) {
 			icon = new Texture(Gdx.files.internal("textures/icons/gender.png"));
 			title = "Gender Equality";
 			desc = "The rights of woman are still violated around the world. The right to vote, drive a car, have a fair trial or earn equal pay is essential to reaching equality, at least in the light of the law.";
-			stats = "\n\nEducation: +0.3\nLove; +2.0\nPeace: +1.3\nHealth: +0.3\nJobs: +0.76";
+			stats = "\n\nEducation: +0.3\nLove; +6.0\nPeace: +1.3\nHealth: +0.3\nJobs: +0.76";
 		} else if(factor == FACTORS.MARRIAGE_EQUALITY) {
 			icon = new Texture(Gdx.files.internal("textures/icons/marriage.png"));
 			title = "Marriage Equality";
 			desc = "In the recent years the rights of LGBTQ+ communities have been slowly increasing. It's important to keep this trend and allow everyone to live a happy life however they want to do it.";
-			stats = "\n\nEducation: +0.3\nLove: +3.0\nPeace: +2.0\nHealth: +0.1";
+			stats = "\n\nEducation: +0.3\nLove: +6.0\nPeace: +2.0\nHealth: +0.1";
 		} else if(factor == FACTORS.CIA_PRISONS) {
 			icon = new Texture(Gdx.files.internal("textures/icons/handcuffs.png"));
 			title = "Secret CIA Prisons";
@@ -213,7 +213,7 @@ public class FactorEntity extends Entity {
 			icon = new Texture(Gdx.files.internal("textures/icons/utility.png"));
 			title = "Utility Tax";
 			desc = "With a growing population the strain put on our infrastructure is getting bigger. It's important to finance the utilities sector properly to have roads without potholes, bridges that don't collapse below you and constant source of power pumped to your house.";
-			stats = "\n\nHealht: +1.1\nJobs: +0.65\nEnvironment: +0.93\nInfrastructure: +5.3\nEnergy: -0.3";
+			stats = "\n\nHealht: +1.1\nJobs: +0.65\nEnvironment: +0.93\nInfrastructure: +3.3\nEnergy: -0.3";
 		} else if(factor == FACTORS.OPEN_TRADE) {
 			icon = new Texture(Gdx.files.internal("textures/icons/ship.png"));
 			title = "Open Trade";
@@ -222,7 +222,7 @@ public class FactorEntity extends Entity {
 		} else if(factor == FACTORS.RENEWABLE_ENERGY) {
 			icon = new Texture(Gdx.files.internal("textures/icons/wind.png"));
 			title = "Renewable Energy";
-			desc = "Fossil fuels have been polluting the Earth since the Industrial Revolution, increasing the amount of Carbon Dioxide in the atmosphere. Acid rain and nuclear waste is also a big problems. Solar, wind and hydro power are a great alternative to those.";
+			desc = "Fossil fuels have been polluting the Earth since the Industrial Revolution, increasing the amount of Carbon Dioxide in the atmosphere. Acid rain and nuclear waste is also a big problem. Solar, wind and hydro power are a great alternative to those.";
 			stats = "\n\nEnergy: +3.22\nJobs: +1.03\nInfrastructure: +2.34\nInternet Access: +3.1\nVodka: +0.53";
 		} else if(factor == FACTORS.SEWER_TREATMENT) {
 			icon = new Texture(Gdx.files.internal("textures/icons/shit.png"));

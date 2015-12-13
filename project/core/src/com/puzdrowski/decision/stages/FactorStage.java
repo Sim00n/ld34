@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
 import com.puzdrowski.decision.entity.FactorEntity;
 
 public class FactorStage extends StageWrapper {
@@ -102,6 +103,7 @@ public class FactorStage extends StageWrapper {
 			public void clicked(InputEvent event, float x, float y) {
 				currentFactor.setAffective(!currentFactor.isAffective());
 				showing = false;
+				GameWorld.button_sound.play();
 			}
 		});
 		
@@ -109,6 +111,7 @@ public class FactorStage extends StageWrapper {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				showing = false;
+				GameWorld.button_sound.play();
 			}
 		});
 	}
