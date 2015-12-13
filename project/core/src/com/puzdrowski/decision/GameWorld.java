@@ -155,8 +155,9 @@ public class GameWorld {
 	}
 	
 	private void endRolling() {
-		if(currentFactor != null) {
-			currentFactor.toggle(false);
+		FactorEntity oldFactor = currentFactor;
+		if(oldFactor != null) {
+			oldFactor.toggle(false);
 		}
 		int set = (int) (Math.random() * 3);
 		if(set == 0) {
@@ -166,6 +167,8 @@ public class GameWorld {
 		} else if (set == 2) {
 			currentFactor = inner[(int) (Math.random() * inner.length)];
 		}
+		
+		evolve(oldFactor, currentFactor);
 		
 		currentFactor.toggle(true);
 	}
@@ -257,7 +260,194 @@ public class GameWorld {
 		break;
 		}*/
 		
-	}	
+	}
+	
+	private void evolve(FactorEntity old, FactorEntity current) {
+				
+		Metrics.HEALTH_D = Metrics.FOOD_D = Metrics.TECH_D = Metrics.ENV_D = Metrics.SPACE_D = Metrics.DRUG_D = Metrics.EDUCATION_D = Metrics.JOBS_D = Metrics.INFRASTRUCTURE_D = Metrics.VODKA_D = Metrics.WIFI_D = Metrics.ENERGY_D = Metrics.LAW_D = Metrics.PEACE_D = Metrics.LOVE = 0f;
+		
+		for(int i = 0; i < outer.length; i++) {
+			FactorEntity fe = outer[i];
+			FACTORS f = fe.getFactor();
+			int a = (fe.isAffective())? 1 : -1;
+			
+			if(f == FACTORS.POPULATION_GROWTH) {
+				Metrics.FOOD_D 				+= a * -0.3f;
+				Metrics.INFRASTRUCTURE_D 	+= a * -0.5f;
+				Metrics.ENERGY_D 			+= a * 0.3f;
+			}
+			if(f == FACTORS.RELIGIOUS_FREEDOM) {
+				Metrics.EDUCATION_D 		+= a * 0.4f;
+				Metrics.LAW_D 				+= a * 0.4f;
+				Metrics.PEACE_D 			+= a * 0.6f;
+			}
+			if(f == FACTORS.CLIMATE_WARMING) {
+				Metrics.FOOD_D 				+= a * -0.9f;
+				Metrics.ENV_D 				+= a * -1.2f;
+				Metrics.JOBS_D 				+= a * 0.6f;
+				Metrics.INFRASTRUCTURE_D	+= a * -0.8f;
+				Metrics.ENERGY_D 			+= a * 0.3f;
+				Metrics.PEACE_D 			+= a * -0.1f;
+			}
+			if(f == FACTORS.MILITARIZATION) {
+				Metrics.INFRASTRUCTURE_D 	+= a * 0.3f;
+				Metrics.ENERGY_D 			+= a * 0.5f;
+				Metrics.LAW_D 				+= a * 0.9f;
+				Metrics.PEACE_D				+= a * -0.1f;
+			}
+			if(f == FACTORS.NASA) {
+				Metrics.HEALTH_D 			+= a * 0.8f;
+				Metrics.FOOD				+= a * 0.5;
+				Metrics.TECH_D				+= a * 1.5f;
+				Metrics.EDUCATION_D 		+= a * 0.45f;
+			}
+			if(f == FACTORS.NUCLEAR_ENERGY) {
+				Metrics.HEALTH				+= a * -0.1f;
+				Metrics.FOOD				+= a * 0.2;
+				Metrics.TECH				+= a * 0.3f;
+				Metrics.ENV					+= a * -0.1f;
+				Metrics.SPACE				+= a * 0.5f;
+				Metrics.EDUCATION			+= a * 0.1f;
+				Metrics.ENERGY				+= a * 1.1f;
+				Metrics.PEACE				+= a * -0.5f;
+			}
+			if(f == FACTORS.QUANTUM_COMPUTING) {
+				Metrics.TECH				+= a * 1.2f;
+				Metrics.EDUCATION			+= a * 0.4f;
+				Metrics.WIFI				+= a * 1.0f;
+				Metrics.ENERGY				+= a * 0.3f;
+				Metrics.PEACE				+= a * 0.1f;
+			}
+			if(f == FACTORS.ELECTRIC_CARS) {
+				Metrics.TECH				+= a * 1.1f;
+				Metrics.SPACE				+= a * 0.8f;
+				Metrics.JOBS				+= a * 0.2f;
+				Metrics.ENERGY				+= a * 0.86;
+			}
+			if(f == FACTORS.VACCINES) {
+				Metrics.HEALTH				+= a * 1.2f;
+				Metrics.SPACE				+= a * 0.1f;			
+				Metrics.PEACE				+= a * 0.1f;
+			}
+			if(f == FACTORS.STD_PREVENTION) {
+				Metrics.HEALTH				+= a * 1.1f;
+				Metrics.SPACE				+= a * 0.1f;
+				Metrics.PEACE				+= a * 0.1f;
+			}
+			if(f == FACTORS.HIGH_UNIVERSITY_COST) {
+				Metrics.HEALTH				+= a * -0.3f;
+				Metrics.TECH				+= a * -0.76f;
+				Metrics.SPACE				+= a * -1.3f;
+				Metrics.EDUCATION			+= a * -1.2f;
+				Metrics.WIFI				+= a * -0.2f;
+				Metrics.ENERGY				+= a * -0.1f;
+			}
+			if(f == FACTORS.GLOBAL_POLICE) {
+				Metrics.DRUG				+= a * -1.6f;
+				Metrics.VODKA				+= a * -0.2f;
+				Metrics.LAW					+= a * 1.1f;
+				Metrics.LOVE				+= a * 0.2f;
+			}
+			if(f == FACTORS.INDUSTRY_REGULATION) {
+				Metrics.HEALTH				+= a * 1.9f;
+				Metrics.TECH				+= a * 0.2f;
+				Metrics.SPACE				+= a * -0.23f;
+				Metrics.JOBS				+= a * -0.53f;
+				Metrics.INFRASTRUCTURE		+= a * -9.3f;
+				Metrics.ENERGY				+= a * -0.2f;
+			}
+			if(f == FACTORS.UNITED_NATIONS) {
+				Metrics.TECH				+= a * 0.3f;
+				Metrics.FOOD				+= a * 0.7;
+				Metrics.ENV					+= a * 0.3;
+				Metrics.PEACE				+= a * 1.6f;
+				Metrics.LOVE				+= a * 1.1f;
+			}
+			if(f == FACTORS.BAN_ON_ALCOHOL) {
+				Metrics.HEALTH				+= a * 1.1f;
+				Metrics.ENV					+= a * 0.3;
+				Metrics.VODKA				+= a * -5.2f;
+				Metrics.PEACE				+= a * -0.5f;
+			}
+			if(f == FACTORS.BAN_ON_DRUGS) {
+				Metrics.HEALTH				+= a * 1.7f;
+				Metrics.ENV					+= a * 0.3;
+				Metrics.VODKA				+= a * -0.1f;
+				Metrics.PEACE				+= a * -0.5f;
+				Metrics.LAW					+= a * -0.9f;
+			}
+			if(f == FACTORS.MEDICAL_RESEARCH) {
+				Metrics.HEALTH				+= a * 1.7f;
+				Metrics.ENV					+= a * 0.8;
+				Metrics.PEACE				+= a * 0.5f;
+				Metrics.EDUCATION			+= a * 2.5f;
+				Metrics.SPACE				+= a * 0.75f;
+			}
+			if(f == FACTORS.FISHING_QUOTAS) {
+				Metrics.FOOD				+= a * -0.2f;
+				Metrics.ENV					+= a * 1.5f;
+				Metrics.JOBS				+= a * -0.7f;
+				Metrics.PEACE				+= a * -0.3f;
+			}
+			if(f == FACTORS.ANIMAL_PROTECTION) {
+				
+			}
+		}
+		
+		/**
+		 * Main:
+		 * HEALTH, FOOD, TECH, ENV, SPACE, DRUG, EDUCATION, JOBS, INFRASTRUCTURE,
+		 * VODKA, WIFI, ENERGY, LAW, PEACE, LOVE
+		 * 
+		 * Side:
+		 * HUNGER, WAR, HAPPINESS
+		 * 
+		 * Factors:
+		 * POPULATION_GROWTH, RELIGIOUS_FREEDOM, CLIMATE_WARMING, MILITARIZATION,
+		 * NASA, NUCLEAR_ENERGY, QUANTUM_COMPUTING, ELECTRIC_CARS, VACCINES, STD_PREVENTION,
+		 * HIGH_UNIVERSITY_COST, GLOBAL_POLICE, INDUSTRY_REGULATION, UNITED_NATIONS,
+		 * BAN_ON_ALCOHOL, BAN_ON_DRUGS, MEDICAL_RESEARCH, FISHING_QUOTAS, ANIMAL_PROTECTION,
+		 * INFO_FREEDOM, MINIMUM_WAGE, GENEVA_CONVENTION, BAN_ON_SMOKING, CONFORMITY, DIVERSITY,
+		 * GENDER_EQUALITY, MARRIAGE_EQUALITY, CIA_PRISONS, POPULATION_TRACKING, CCTV, 
+		 * ALCOHOL_TAX, CORPORATION_TAX, PROPERTY_TAX, HIGH_UNEMPLOYMENT, UTILITY_TAX,
+		 * OPEN_TRADE, RENEWABLE_ENERGY, SEWER_TREATMENT, EPIDEMICS, DISASTER_PREVENTION
+		 */
+		
+		Metrics.HEALTH 			+= Metrics.HEALTH_D;
+		Metrics.FOOD 			+= Metrics.FOOD_D;
+		Metrics.TECH			+= Metrics.TECH_D;
+		Metrics.ENV				+= Metrics.ENV_D;
+		Metrics.SPACE			+= Metrics.SPACE_D;
+		Metrics.DRUG 			+= Metrics.DRUG_D;
+		Metrics.EDUCATION		+= Metrics.EDUCATION_D;
+		Metrics.JOBS			+= Metrics.JOBS_D;
+		Metrics.INFRASTRUCTURE	+= Metrics.INFRASTRUCTURE_D;
+		Metrics.VODKA			+= Metrics.VODKA_D;
+		Metrics.WIFI			+= Metrics.WIFI_D;
+		Metrics.ENERGY			+= Metrics.ENERGY_D;
+		Metrics.LAW				+= Metrics.LAW_D;
+		Metrics.PEACE			+= Metrics.PEACE_D;
+		Metrics.LOVE			+= Metrics.LOVE_D;
+		
+		Metrics.showDeltas = true;
+			
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

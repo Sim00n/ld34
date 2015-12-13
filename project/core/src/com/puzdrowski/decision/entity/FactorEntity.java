@@ -12,7 +12,6 @@ public class FactorEntity extends Entity {
 	private boolean isAffective;
 	private Texture hoverTexture;
 	private Texture icon;
-	@SuppressWarnings("unused")
 	private FACTORS factor;
 	private boolean rolling;
 	
@@ -165,4 +164,53 @@ public class FactorEntity extends Entity {
 	public void toggleAffect() {
 		isAffective = !isAffective;
 	}
+
+	public boolean isCurrent() {
+		return isCurrent;
+	}
+
+	public void setCurrent(boolean isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+
+	public boolean isAffective() {
+		return isAffective;
+	}
+
+	public void setAffective(boolean isAffective) {
+		this.isAffective = isAffective;
+	}
+
+	public Texture getHoverTexture() {
+		return hoverTexture;
+	}
+
+	public void setHoverTexture(Texture hoverTexture) {
+		this.hoverTexture = hoverTexture;
+	}
+
+	public Texture getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Texture icon) {
+		this.icon = icon;
+	}
+
+	public FACTORS getFactor() {
+		return factor;
+	}
+
+	public void setFactor(FACTORS factor) {
+		this.factor = factor;
+	}
+
+	public boolean isRolling() {
+		return rolling;
+	}
+
+	public void setRolling(boolean rolling) {
+		this.rolling = rolling;
+	}
+	
 }
