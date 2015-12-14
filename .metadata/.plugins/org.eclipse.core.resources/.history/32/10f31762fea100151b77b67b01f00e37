@@ -1,0 +1,103 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
+import com.puzdrowski.decision.GameWorld.SCREEN;
+
+public class MenuStage extends StageWrapper {
+	private Label text;
+	private Image image;
+	private Button startButton, exitButton;
+	public boolean showing;
+	
+	public MenuStage(Game game) {
+		super(game);
+		showing = false;
+	}
+
+	public void updateData() {	
+		Gdx.input.setInputProcessor(stage);
+		this.showing = true;
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();		
+		
+		Table table = new Table();
+		table.setSize(1000f, 500f);
+		table.setPosition(Game.WIDTH / 2 - 500, Game.HEIGHT / 2 - 250);
+		table.align(Align.top);
+		table.setBackground(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("textures/menubg.png")))));
+		
+		image = new Image(new Texture(Gdx.files.internal("textures/logo.png")));
+		
+		text = new Label("\nWelcome to Decision. You've become the world leader and it's your job to properly balance the world's policies. Use the 'Roll' button to spin the pool of laws and then decide whether the specific law will be kept. Every time you land on that perticular law, you can change it. Your decisions affect the 'properties' of the world which in turn affect the 'ultimate goal'. You can win the game by either making the Earth perfect - ending world hunger and wars while everyone is happy; or destroy it by making everyone hate you through wars and extreme hunger.\n\nHow it works?\nOn the respective cards you can see how much they affect the overall stats of the world. Manipulate them with 2 buttons (on or off) to change the stats which in turn influence the 3 global measures of success: hunger, wars and happiness.\n\nHow do I win?\nMake the world thriving by getting rid of wars and hunger while people are happy.\nOr destroy it by waging war and hunger while everyone is sad.\nEither makes you win the game.\n\nSzymon Puzdrowski for LudumDare #34.\nhttp://puzdrowski.com", skin);
+		text.setWrap(true);
+		text.setWidth(600f);
+		
+		startButton = new TextButton("Start Game", skin);
+		startButton.setWidth(200f);
+		exitButton = new TextButton("Exit", skin);
+		exitButton.setWidth(200f);
+				
+		Table buttonTable = new Table();
+		buttonTable.align(Align.left);
+		buttonTable.setWidth(300f);
+		buttonTable.add(image).align(Align.center);
+		buttonTable.row().padTop(50f);
+		buttonTable.add(startButton).width(200f);
+		buttonTable.row().padTop(30f);
+		buttonTable.add(exitButton).width(200f);
+	
+		Table contentTable = new Table();
+		contentTable.setWidth(700f);
+		contentTable.add(text).width(600f);
+		
+		table.add(buttonTable).width(300f);
+		table.add(contentTable).width(700f);
+		
+		stage.addActor(table);
+		listeners();
+	}
+	
+	@Override
+	public void render() {
+		if(showing)
+			super.render();
+	}
+	
+	public void listeners() {
+		startButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showing = false;
+				GameWorld.screen = GameWorld.SCREEN.GAME;
+				GameWorld.ambient.setLooping(true);
+				GameWorld.ambient.play();
+				Gdx.input.setInputProcessor(Game.ip);
+			}
+		});
+		
+		exitButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+	}
+	
+	
+}

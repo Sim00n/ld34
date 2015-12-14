@@ -15,6 +15,7 @@ import com.puzdrowski.decision.entity.FactorEntity.FACTORS;
 import com.puzdrowski.decision.input.Keyboard;
 import com.puzdrowski.decision.stages.FactorStage;
 import com.puzdrowski.decision.stages.HintStage;
+import com.puzdrowski.decision.stages.MenuStage;
 import com.puzdrowski.decision.stages.WinStage;
 
 public class GameWorld {
@@ -26,17 +27,18 @@ public class GameWorld {
 	private HintStage hintStage;
 	private WinStage winStage;
 	private FactorStage factorStage;
+	private MenuStage menuStage;
 
 	private Texture txt_background, board, button, big_button, big_button_hover, button_hover_t, help;
-	private BitmapFont font;
+	public BitmapFont font;
 	public static Sound roulette, button_sound, click_sound;
 	public static Music ambient;
 	
-	
-	private enum SCREEN {WELCOME, GAME, END};
-	private SCREEN screen;
+	public static enum SCREEN {MENU, GAME, END};
+	public static SCREEN screen;
 	private boolean displayHelp = false;
 	private float helpButtonTimer = 0f; 
+	public static boolean contPlaying = false;
 	
 	private boolean rolling = false;
 	private float rollingSpeed = 0.0f;
@@ -61,9 +63,11 @@ public class GameWorld {
 		batch = new SpriteBatch();
 		
 		hintStage = new HintStage(this.game);
-		winStage = new WinStage(this.game);
+		winStage = new WinStage(this.game, this);
 		factorStage = new FactorStage(this.game);
-		screen = SCREEN.GAME;
+		menuStage = new MenuStage(this.game);
+		screen = SCREEN.MENU;
+		menuStage.updateData();
 		
 		txt_background = new Texture(Gdx.files.internal("textures/bg_alt.png"));
 		board = new Texture(Gdx.files.internal("textures/board.png"));
@@ -77,8 +81,6 @@ public class GameWorld {
 		button_sound = Gdx.audio.newSound(Gdx.files.internal("audio/button.wav"));
 		click_sound = Gdx.audio.newSound(Gdx.files.internal("audio/click.mp3"));
 		ambient = Gdx.audio.newMusic(Gdx.files.internal("audio/ambient.mp3"));
-		ambient.setLooping(true);
-		ambient.play();
 		
 		font = new BitmapFont();
 		font.setColor(new Color(0.1f, 0.42f, 0.78f, 1f)); // Buttons' font
@@ -89,50 +91,50 @@ public class GameWorld {
 		
 		float theta = 0.0f;
 		theta = 360f/22f;
-		factors[0] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 0, FACTORS.ALCOHOL_TAX, true);
-		factors[1] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 1, FACTORS.ANIMAL_PROTECTION, false);
-		factors[2] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 2, FACTORS.BAN_ON_ALCOHOL, false);
-		factors[3] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 3, FACTORS.BAN_ON_DRUGS, false);
-		factors[4] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 4, FACTORS.BAN_ON_SMOKING, false);
-		factors[5] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 5, FACTORS.CCTV, true);
-		factors[6] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 6, FACTORS.CIA_PRISONS, false);
-		factors[7] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 7, FACTORS.CLIMATE_WARMING, true);
-		factors[8] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 8, FACTORS.CONFORMITY, true);
-		factors[9] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 9, FACTORS.CORPORATION_TAX, false);
-		factors[10] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 10, FACTORS.DIVERSITY, true);
-		factors[11] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 11, FACTORS.ELECTRIC_CARS, false);
-		factors[12] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 12, FACTORS.FISHING_QUOTAS, false);
-		factors[13] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 13, FACTORS.GENDER_EQUALITY, false);
-		factors[14] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 14, FACTORS.GENEVA_CONVENTION, true);
-		factors[15] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 15, FACTORS.GLOBAL_POLICE, false);
-		factors[16] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 16, FACTORS.HIGH_UNIVERSITY_COST, true);
-		factors[17] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 17, FACTORS.INDUSTRY_REGULATION, false);
-		factors[18] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 18, FACTORS.INFO_FREEDOM, true);
-		factors[19] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 19, FACTORS.MARRIAGE_EQUALITY, false);
-		factors[20] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 20, FACTORS.MEDICAL_RESEARCH, true);
-		factors[21] = new FactorEntity(button, button_hover_t, theta, TYPE.OUTER, 21, FACTORS.MILITARIZATION, false);
-		
+		factors[0] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 0, FACTORS.ALCOHOL_TAX, true);
+		factors[1] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 1, FACTORS.ANIMAL_PROTECTION, false);
+		factors[2] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 2, FACTORS.BAN_ON_ALCOHOL, false);
+		factors[3] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 3, FACTORS.BAN_ON_DRUGS, false);
+		factors[4] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 4, FACTORS.BAN_ON_SMOKING, false);
+		factors[5] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 5, FACTORS.CCTV, true);
+		factors[6] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 6, FACTORS.CIA_PRISONS, false);
+		factors[7] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 7, FACTORS.CLIMATE_WARMING, true);
+		factors[8] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 8, FACTORS.CONFORMITY, true);
+		factors[9] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 9, FACTORS.CORPORATION_TAX, false);
+		factors[10] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 10, FACTORS.DIVERSITY, true);
+		factors[11] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 11, FACTORS.ELECTRIC_CARS, false);
+		factors[12] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 12, FACTORS.FISHING_QUOTAS, false);
+		factors[13] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 13, FACTORS.GENDER_EQUALITY, false);
+		factors[14] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 14, FACTORS.GENEVA_CONVENTION, true);
+		factors[15] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 15, FACTORS.GLOBAL_POLICE, false);
+		factors[16] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 16, FACTORS.HIGH_UNIVERSITY_COST, true);
+		factors[17] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 17, FACTORS.INDUSTRY_REGULATION, false);
+		factors[18] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 18, FACTORS.INFO_FREEDOM, true);
+		factors[19] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 19, FACTORS.MARRIAGE_EQUALITY, false);
+		factors[20] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 20, FACTORS.MEDICAL_RESEARCH, true);
+		factors[21] = new FactorEntity(this, button, button_hover_t, theta, TYPE.OUTER, 21, FACTORS.MILITARIZATION, false);
+
 		theta = 360f/12f;
-		factors[22] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 0, FACTORS.MINIMUM_WAGE, true);
-		factors[23] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 1, FACTORS.NASA, false);
-		factors[24] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 2, FACTORS.NUCLEAR_ENERGY, false);
-		factors[25] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 3, FACTORS.POPULATION_GROWTH, false);
-		factors[26] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 4, FACTORS.POPULATION_TRACKING, false);
-		factors[27] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 5, FACTORS.PROPERTY_TAX, false);
-		factors[28] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 6, FACTORS.QUANTUM_COMPUTING, false);
-		factors[29] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 7, FACTORS.RELIGIOUS_FREEDOM,false);
-		factors[30] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 8, FACTORS.STD_PREVENTION, false);
-		factors[31] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 9, FACTORS.UNITED_NATIONS, false);
-		factors[32] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 10, FACTORS.VACCINES, false);
-		factors[33] = new FactorEntity(button, button_hover_t, theta, TYPE.MIDDLE, 11, FACTORS.HIGH_UNEMPLOYMENT, false);
-				
+		factors[22] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 0, FACTORS.MINIMUM_WAGE, true);
+		factors[23] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 1, FACTORS.NASA, false);
+		factors[24] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 2, FACTORS.NUCLEAR_ENERGY, false);
+		factors[25] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 3, FACTORS.POPULATION_GROWTH, false);
+		factors[26] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 4, FACTORS.POPULATION_TRACKING, false);
+		factors[27] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 5, FACTORS.PROPERTY_TAX, false);
+		factors[28] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 6, FACTORS.QUANTUM_COMPUTING, false);
+		factors[29] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 7, FACTORS.RELIGIOUS_FREEDOM,false);
+		factors[30] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 8, FACTORS.STD_PREVENTION, false);
+		factors[31] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 9, FACTORS.UNITED_NATIONS, false);
+		factors[32] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 10, FACTORS.VACCINES, false);
+		factors[33] = new FactorEntity(this, button, button_hover_t, theta, TYPE.MIDDLE, 11, FACTORS.HIGH_UNEMPLOYMENT, false);
+
 		theta = 360f/6f;
-		factors[34] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 0, FACTORS.UTILITY_TAX, true);
-		factors[35] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 1, FACTORS.OPEN_TRADE, true);
-		factors[36] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 2, FACTORS.RENEWABLE_ENERGY, false);
-		factors[37] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 3, FACTORS.SEWER_TREATMENT, false);
-		factors[38] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 4, FACTORS.EPIDEMICS, false);
-		factors[39] = new FactorEntity(button, button_hover_t, theta, TYPE.INNER, 5, FACTORS.DISASTER_PREVENTION, false);
+		factors[34] = new FactorEntity(this, button, button_hover_t, theta, TYPE.INNER, 0, FACTORS.UTILITY_TAX, true);
+		factors[35] = new FactorEntity(this, button, button_hover_t, theta, TYPE.INNER, 1, FACTORS.OPEN_TRADE, true);
+		factors[36] = new FactorEntity(this, button, button_hover_t, theta, TYPE.INNER, 2, FACTORS.RENEWABLE_ENERGY, false);
+		factors[37] = new FactorEntity(this, button, button_hover_t, theta, TYPE.INNER, 3, FACTORS.SEWER_TREATMENT, false);
+		factors[38] = new FactorEntity(this, button, button_hover_t, theta, TYPE.INNER, 4, FACTORS.EPIDEMICS, false);
+		factors[39] = new FactorEntity(this, button, button_hover_t, theta, TYPE.INNER, 5, FACTORS.DISASTER_PREVENTION, false);
 		
 		//endRolling();
 	}
@@ -142,16 +144,12 @@ public class GameWorld {
 		buttons(tick);
 		factors(tick);
 		
-		if(Keyboard.isDown(Keyboard.END)) {
-			Metrics.HUNGER = 100f;
-			Metrics.WAR = 100f;
-			Metrics.HAPPINESS = 0f;
-			winStage.updateData();
-			screen = SCREEN.END;
-		}
 		if(Keyboard.isDown(Keyboard.HELP)) {
-			button_sound.play();
-			displayHelp = !displayHelp;
+			if(helpButtonTimer == 0f) {
+				button_sound.play();
+				displayHelp = !displayHelp;
+				helpButtonTimer = 0.1f;
+			}
 		}
 		
 		switch(screen) {
@@ -161,6 +159,9 @@ public class GameWorld {
 			break;
 		case END:
 			winStage.update(tick);
+			break;
+		case MENU:
+			menuStage.update(tick);
 			break;
 		default: break;
 		}
@@ -308,6 +309,8 @@ public class GameWorld {
 			renderButtons();
 			batch.end();
 			winStage.render();	
+		} else if(screen == SCREEN.MENU) {
+			menuStage.render();
 		}
 
 		if(displayHelp) {
@@ -582,25 +585,6 @@ public class GameWorld {
 			}
 		}
 		
-		/**
-		 * Main:
-		 * HEALTH, FOOD, TECH, ENV, SPACE, DRUG, EDUCATION, JOBS, INFRASTRUCTURE,
-		 * VODKA, WIFI, ENERGY, LAW, PEACE, LOVE
-		 * 
-		 * Side:
-		 * HUNGER, WAR, HAPPINESS
-		 * 
-		 * Factors:
-		 * POPULATION_GROWTH, RELIGIOUS_FREEDOM, CLIMATE_WARMING, MILITARIZATION,
-		 * NASA, NUCLEAR_ENERGY, QUANTUM_COMPUTING, ELECTRIC_CARS, VACCINES, STD_PREVENTION,
-		 * HIGH_UNIVERSITY_COST, GLOBAL_POLICE, INDUSTRY_REGULATION, UNITED_NATIONS,
-		 * BAN_ON_ALCOHOL, BAN_ON_DRUGS, MEDICAL_RESEARCH, FISHING_QUOTAS, ANIMAL_PROTECTION,
-		 * INFO_FREEDOM, MINIMUM_WAGE, GENEVA_CONVENTION, BAN_ON_SMOKING, CONFORMITY, DIVERSITY,
-		 * GENDER_EQUALITY, MARRIAGE_EQUALITY, CIA_PRISONS, POPULATION_TRACKING, CCTV, 
-		 * ALCOHOL_TAX, CORPORATION_TAX, PROPERTY_TAX, HIGH_UNEMPLOYMENT, UTILITY_TAX,
-		 * OPEN_TRADE, RENEWABLE_ENERGY, SEWER_TREATMENT, EPIDEMICS, DISASTER_PREVENTION
-		 */
-		
 		Metrics.HEALTH 			+= Metrics.HEALTH_D;
 		Metrics.FOOD 			+= Metrics.FOOD_D;
 		Metrics.TECH			+= Metrics.TECH_D;
@@ -651,6 +635,9 @@ public class GameWorld {
 		
 		if(Metrics.WIFI > 100f) Metrics.WIFI = 100f;
 		if(Metrics.WIFI < 0f)   Metrics.WIFI = 0f;
+		
+		if(Metrics.ENERGY > 100f) Metrics.ENERGY = 100f;
+		if(Metrics.ENERGY < 0f)   Metrics.ENERGY = 0f;
 		
 		if(Metrics.LAW > 100f) Metrics.LAW = 100f;
 		if(Metrics.LAW < 0f)   Metrics.LAW = 0f;
@@ -723,6 +710,9 @@ public class GameWorld {
 	}
 	
 	private void verifyWinCondition() {
+		if(GameWorld.contPlaying)
+			return;
+		
 		if((Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f)
 				|| (Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 100f && Metrics.WAR >= 100f)) {
 			screen = SCREEN.END;

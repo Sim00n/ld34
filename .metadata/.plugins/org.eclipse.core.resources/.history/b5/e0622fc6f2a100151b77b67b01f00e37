@@ -1,0 +1,101 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
+
+public class MenuStage extends StageWrapper {
+	private Label text;
+	private Image image;
+	private Button startButton, exitButton;
+	public boolean showing;
+	
+	public MenuStage(Game game) {
+		super(game);
+		showing = false;
+	}
+
+	public void updateData() {	
+		Gdx.input.setInputProcessor(stage);
+		this.showing = true;
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();		
+		
+		Table table = new Table();
+		table.setSize(1000f, 500f);
+		table.setPosition(Game.WIDTH / 2 - 500, Game.HEIGHT / 2 - 250);
+		table.align(Align.top);
+		table.setBackground(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("textures/menubg.png")))));
+		
+		image = new Image(new Texture(Gdx.files.internal("textures/logo.png")));
+		
+		text = new Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla augue velit, placerat nec mi nec, elementum tincidunt massa. Cras pharetra orci vel dolor laoreet, vitae bibendum lorem mattis. Sed pellentesque rhoncus metus a vehicula. Praesent ultricies lobortis enim. Duis et mi orci. Quisque sodales nec mauris id commodo. Donec nec rhoncus nisi, at sodales magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum a lectus ipsum. Suspendisse ultrices mi nec neque consequat mattis. Pellentesque pharetra non ipsum quis cursus. Mauris quis imperdiet eros, vitae porttitor est. Nullam fringilla, eros ut rhoncus consequat, nisi urna consectetur justo, eget mollis erat purus sit amet ligula. Pellentesque ut cursus neque. Integer elementum posuere justo dictum luctus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla augue velit, placerat nec mi nec, elementum tincidunt massa. Cras pharetra orci vel dolor laoreet, vitae bibendum lorem mattis. Sed pellentesque rhoncus metus a vehicula. Praesent ultricies lobortis enim. Duis et mi orci. Quisque sodales nec mauris id commodo. Donec nec rhoncus nisi, at sodales magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum a lectus ipsum. Suspendisse ultrices mi nec neque consequat mattis. Pellentesque pharetra non ipsum quis cursus. Mauris quis imperdiet eros, vitae porttitor est. Nullam fringilla, eros ut rhoncus consequat, nisi urna consectetur justo, eget mollis erat purus sit amet ligula. Pellentesque ut cursus neque. Integer elementum posuere justo dictum luctus.", skin);
+		text.setWrap(true);
+		text.setWidth(600f);
+		
+		startButton = new TextButton("Start Game", skin);
+		startButton.setWidth(200f);
+		exitButton = new TextButton("Exit", skin);
+		exitButton.setWidth(200f);
+				
+		Table buttonTable = new Table();
+		buttonTable.align(Align.left);
+		buttonTable.setWidth(300f);
+		buttonTable.add(image).align(Align.center);
+		buttonTable.row().padTop(50f);
+		buttonTable.add(startButton).width(200f);
+		buttonTable.row().padTop(30f);
+		buttonTable.add(exitButton).width(200f);
+	
+		Table contentTable = new Table();
+		contentTable.setWidth(700f);
+		contentTable.add(text).width(600f);
+		
+		table.add(buttonTable).width(300f);
+		table.add(contentTable).width(700f);
+		
+		stage.addActor(table);
+		listeners();
+	}
+	
+	@Override
+	public void render() {
+		if(showing)
+			super.render();
+	}
+	
+	public void listeners() {
+		startButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showing = false;
+				GameWorld.screen = GameWorld.SCREEN.GAME;
+				GameWorld.ambient.setLooping(true);
+				GameWorld.ambient.play();
+			}
+		});
+		
+		exitButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+	}
+	
+	
+}

@@ -1,0 +1,93 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
+import com.puzdrowski.decision.entity.FactorEntity;
+
+public class MenuStage extends StageWrapper {
+
+	private Window window;
+	private Label text;
+	private Image image;
+	private Button startButton, exitButton;
+	public boolean showing;
+	
+	public MenuStage(Game game) {
+		super(game);
+		showing = false;
+	}
+
+	public void updateData() {	
+		Gdx.input.setInputProcessor(stage);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		Table table = new Table();
+		
+		image = new Image(new Texture(Gdx.files.internal("textures/logo.png")));
+		
+		text = new Label("some text", skin);
+		text.setWrap(true);
+		text.setWidth(300);
+		
+		startButton = new TextButton("Start Game", skin);
+		exitButton = new TextButton("Exit", skin);
+				
+		Table buttonTable = new Table();
+		buttonTable.add(startButton);
+		buttonTable.row().padTop(30f);
+		buttonTable.add(exitButton);
+	
+		Table contentTable = new Table();
+		contentTable.add(image);
+		contentTable.row().padTop(50f);
+		contentTable.add(text);
+		
+		table.add(buttonTable);
+		table.add(contentTable);
+		
+		stage.addActor(table);
+		listeners();
+	}
+	
+	@Override
+	public void render() {
+		if(showing)
+			super.render();
+	}
+	
+	public void listeners() {
+		startButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showing = false;
+				GameWorld.screen = GameWorld.SCREEN.GAME:
+			}
+		});
+		
+		skipButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showing = false;
+				GameWorld.button_sound.play();
+			}
+		});
+	}
+	
+	
+}

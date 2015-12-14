@@ -1,21 +1,30 @@
 package com.puzdrowski.decision.stages;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
 import com.puzdrowski.decision.Metrics;
 
 public class WinStage extends StageWrapper {
 
-	Window window;
-	Label message, stats1, stats2, stats3;
+	private GameWorld world;
+	private Label message, stats1, stats2, stats3;
+	private Button contButton;
 	
-	public WinStage(Game game) {
+	public WinStage(Game game, GameWorld world) {
 		super(game);
+		this.world = world;
 	}
 	
 	public void updateData() {
+		Gdx.input.setInputProcessor(stage);
 		if(Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f) {
 			// thriving
 			String s = "";
@@ -65,9 +74,7 @@ public class WinStage extends StageWrapper {
 	
 	@Override
 	public void elements() {
-		super.elements();
-		
-		window = new Window("Congratulations! You've won!", skin);
+		Window window = new Window("Congratulations! You've won!", skin);
 		window.setSize(1000f, 400f);
 		window.setPosition(Game.WIDTH / 2 - 500, Game.HEIGHT / 2 - 200);
 		
@@ -87,16 +94,35 @@ public class WinStage extends StageWrapper {
 		stats2.setWrap(true);
 		stats3.setWidth(300f);
 		stats3.setWrap(true);
+		
+		contButton = new TextButton("Continue playing", skin);
+		contButton.setWidth(300f);
 
 		table.add(message).width(900f).colspan(3);
 		table.row().padTop(30f);
 		table.add(stats1).width(300f);
 		table.add(stats2).width(300f);
 		table.add(stats3).width(300f);
+		table.row().padTop(30f).colspan(3);
+		table.add(contButton).width(300f);
 		
 		window.add(table);
 		stage.addActor(window);
+		listeners();
 	}
+	
+	public void listeners() {
+		contButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				world.button_sound.play();
+				world.contPlaying = true;
+				world.screen = GameWorld.SCREEN.GAME;
+				Gdx.input.setInputProcessor(game.ip);
+			}
+		});
+	}
+	
 }
 
 

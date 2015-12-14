@@ -16,10 +16,12 @@ public class Game extends ApplicationAdapter {
 	private float accum;
 	
 	private GameWorld world;
+	public static InputProcessor ip;
 	
 	@Override
 	public void create () {
-		Gdx.input.setInputProcessor(new InputProcessor());
+		ip = new InputProcessor();
+		//Gdx.input.setInputProcessor(Game.ip);
 		Gdx.graphics.setDisplayMode(WIDTH, HEIGHT, false);
 		Metrics.init(); // Let's do this before loading the world just for safety.
 		world = new GameWorld(this);

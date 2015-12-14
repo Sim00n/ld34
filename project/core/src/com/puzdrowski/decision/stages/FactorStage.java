@@ -34,7 +34,12 @@ public class FactorStage extends StageWrapper {
 
 	public void updateData(FactorEntity fe) {
 		this.currentFactor = fe;
-		window.getTitleLabel().setText("Do you want to change this policy?  -  " + fe.getTitle());
+		
+		if(fe.isAffective())
+			window.getTitleLabel().setText(fe.getTitle() + " - ACTIVE");
+		else
+			window.getTitleLabel().setText(fe.getTitle() + " - not active");
+		
 		image.setDrawable(new SpriteDrawable(new Sprite(fe.getIcon())));
 		image.setScale(0.8f);
 		image.setPosition(15f, 0);
@@ -43,7 +48,7 @@ public class FactorStage extends StageWrapper {
 		if(fe.isAffective()) {
 			stats.setText(fe.getStats());
 		} else {
-			stats.setText("\n"+fe.getStats().replaceAll("\\-", "").replaceAll("\\+", "-"));
+			stats.setText(fe.getStats().replaceAll("\\-", "").replaceAll("\\+", "-"));
 		}
 		
 		Gdx.input.setInputProcessor(stage);
@@ -71,7 +76,7 @@ public class FactorStage extends StageWrapper {
 		stats.setWidth(200);
 		
 		changeButton = new TextButton("Change", skin);
-		skipButton = new TextButton("Skip", skin);
+		skipButton = new TextButton("Don't change", skin);
 		
 		
 		table.add(image).width(200f);
@@ -104,6 +109,7 @@ public class FactorStage extends StageWrapper {
 				currentFactor.setAffective(!currentFactor.isAffective());
 				showing = false;
 				GameWorld.button_sound.play();
+				Gdx.input.setInputProcessor(Game.ip);
 			}
 		});
 		
@@ -112,6 +118,7 @@ public class FactorStage extends StageWrapper {
 			public void clicked(InputEvent event, float x, float y) {
 				showing = false;
 				GameWorld.button_sound.play();
+				Gdx.input.setInputProcessor(Game.ip);
 			}
 		});
 	}

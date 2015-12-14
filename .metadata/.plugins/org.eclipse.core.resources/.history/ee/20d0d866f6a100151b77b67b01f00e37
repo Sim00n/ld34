@@ -1,0 +1,390 @@
+package com.puzdrowski.decision.entity;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
+
+public class FactorEntity extends Entity {
+
+	private GameWorld world;
+	private boolean isCurrent;
+	private boolean isAffective;
+	private Texture hoverTexture;
+	private Texture icon;
+	private Image image;
+	private FACTORS factor;
+	private boolean rolling;
+	private String desc;
+	private String title;
+	private String stats;
+	
+	//33
+	public static enum FACTORS {
+		POPULATION_GROWTH, RELIGIOUS_FREEDOM, CLIMATE_WARMING, MILITARIZATION,
+		NASA, NUCLEAR_ENERGY, QUANTUM_COMPUTING, ELECTRIC_CARS, VACCINES, STD_PREVENTION,
+		HIGH_UNIVERSITY_COST, GLOBAL_POLICE, INDUSTRY_REGULATION, UNITED_NATIONS,
+		BAN_ON_ALCOHOL, BAN_ON_DRUGS, MEDICAL_RESEARCH, FISHING_QUOTAS, ANIMAL_PROTECTION,
+		INFO_FREEDOM, MINIMUM_WAGE, GENEVA_CONVENTION, BAN_ON_SMOKING, CONFORMITY, DIVERSITY,
+		GENDER_EQUALITY, MARRIAGE_EQUALITY, CIA_PRISONS, POPULATION_TRACKING, CCTV, 
+		ALCOHOL_TAX, CORPORATION_TAX, PROPERTY_TAX, HIGH_UNEMPLOYMENT, UTILITY_TAX,
+		OPEN_TRADE, RENEWABLE_ENERGY, SEWER_TREATMENT, EPIDEMICS, DISASTER_PREVENTION
+	};
+	
+	public FactorEntity(GameWorld world, Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor, boolean active) {
+		super(texture, theta, type, i);
+		this.world = world;
+		this.factor = factor;
+		this.isCurrent = false;
+		this.isAffective = active;
+		this.rolling = false;
+		
+		if(factor == FACTORS.POPULATION_GROWTH) {
+			icon = new Texture(Gdx.files.internal("textures/icons/population.png"));
+			title = "Population Growth";
+			desc = "The amount of people on Earth increases our food consumption and the rate at which our infrastructure deteriorates. However having a bigger workfore allows us to produce more energy.";
+			stats = "\n\nFood: -0.3\nInfrastructure: -0.5\nEnergy: +0.3";
+		} else if(factor == FACTORS.RELIGIOUS_FREEDOM) {
+			icon = new Texture(Gdx.files.internal("textures/icons/religion.png"));
+			title = "Religious Freedom";
+			desc = "Religion is important to many people. Freedom to believe whatever you want makes our student body feel safe. Naturally it also creates more peacefull relations withing different cultures.";
+			stats = "\n\nEducation: +2.4\nLaw: +0.4\nPeace: +0.6";
+		} else if(factor == FACTORS.CLIMATE_WARMING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/weather.png"));
+			title = "Climate Warming";
+			desc = "The Industrial Revolution created a huge environmental concern for all man kind. Allowing the global average temperature to grow will have a devastating effect in the long run.";
+			stats = "\n\nFood: -0.9\nEnvironment: -1.2\nJobs: +0.6\nInfrastructure: -0.8\nEnergy: +0.3\nPeace: -0.1";
+		} else if(factor == FACTORS.MILITARIZATION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/tank.png"));
+			title = "Militarization";
+			desc = "For hundreds of years brave men fought in wars. Although the years of empires and colonialism are gone, there is still a lot of hatred in the world. Armies create jobs but might not be the way to ultimate peace.";
+			stats = "\n\nInfrastructure: +0.3\nEnergy: +0.5\nLaw: +0.9\nPeace: -0.1";
+		} else if(factor == FACTORS.NASA) {
+			icon = new Texture(Gdx.files.internal("textures/icons/space.png"));
+			title = "NASA Development";
+			desc = "The National Aeronautics and Space Agency is an excelent to progress our knowledge about the extra terrestial life. Their work also directly contributes to solving problems that we have here on Earth today.";
+			stats = "\n\nHealth: +0.8\n Food: +0.5\nTech +1.5\nEducation: +0.45";
+		} else if(factor == FACTORS.NUCLEAR_ENERGY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/nuclear.png"));
+			title = "Nuclear Energy";
+			desc = "Although energy obtained from Uranium emmits much less Carbon Dioxide into the atmosphere, the radioactive waste produced by each nuclear reactor create many environmental concerns.";
+			stats = "\n\nHealth: -0.1\nTech: +0.3\nEnvironment: -0.1\nEnergy: +1.1\nPeace: -0.5";
+		} else if(factor == FACTORS.QUANTUM_COMPUTING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/tech.png"));
+			title = "Quantum Computing";
+			desc = "While we're approaching the limit of the distance between transistors on a signle chip it's important to start thinking of faster alternatives to the current computer.";
+			stats = "\n\nTech: +1.1\nEducation: +0.4\nInternet: +1.0\nEnergy: +0.3\nPeace: +0.1";
+		} else if(factor == FACTORS.ELECTRIC_CARS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/car.png"));
+			title = "Electric Car";
+			desc = "Fossil fuels used to power our motovehicles for the past 100 years are polluting the planet at an enormous rate. The introduction of the electric car would surely decrease our environmental footprint.";
+			stats = "\n\nTech: +1.1\nSpace: +0.8\nJobs: +0.2\nEnergy: +0.86\nEnvironment: +1.13";
+		} else if(factor == FACTORS.VACCINES) {
+			icon = new Texture(Gdx.files.internal("textures/icons/vaccine.png"));
+			title = "Vaccines";
+			desc = "It is said that diseases brought to the \"New World\" by Christopher Columbus and his crew wiped more than half of the American population. Since the invention of the vaccine our ability to fight plagues increased greately.";
+			stats = "\n\nHealth: +1.2\nSpace: +0.1\nPeace: +0.1";
+		} else if(factor == FACTORS.STD_PREVENTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/condom.png"));
+			title = "STD Prevention";
+			desc = "Many developing countries where contraception is not available often carry increased rates of STIs and STDs. Investing in proper programs could improve those rates.";
+			stats = "\n\nHealth: +1.2\nSpace: +0.1\nPeace: +0.1";
+		} else if(factor == FACTORS.HIGH_UNIVERSITY_COST) {
+			icon = new Texture(Gdx.files.internal("textures/icons/education.png"));
+			title = "High Cost of University";
+			desc = "Although sending a kid through college is expensive and drains our budget, the benefits of an educated society capable of invention and dreaming are far greater than the economical disadvantage.";
+			stats = "\n\nHealth: -0.3\nTech: -0.76\nSpace: -1.3\nEducation: -1.2\nInternet: -0.2\nEnergy: -0.1";
+		} else if(factor == FACTORS.GLOBAL_POLICE) {
+			icon = new Texture(Gdx.files.internal("textures/icons/police.png"));
+			title = "Global Police";
+			desc = "An international police force that collaborates across the globe will certainly decrease crime rate. With unified crime database and evidence sharing the courts will have an easier job convicting criminals.";
+			stats = "\n\nDrug: -1.6\nVodka: -0.2\nLaw: +1.1\nLove: +0.2";
+		} else if(factor == FACTORS.INDUSTRY_REGULATION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/factory.png"));
+			title = "Heavy Industry Regulations";
+			desc = "Part of the reason we have many environmental problems is letting the industry loose. However because of the lack of regulations we were also able to invent many new technologies. There needs to be a balance.";
+			stats = "\n\nHealth: +1.9\nTech: +0.2\nSpace: -0.23\nJobs: -0.53\nInfrastructure: -1.3\nEnergy: -0.2";
+		} else if(factor == FACTORS.UNITED_NATIONS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/handshake.png"));
+			title = "United Nations";
+			desc = "A place that facilitates every aspect of colaboration between nations is needed. Conflicts, trade, banking, intelligence exchange and many other issues have been resolved throgh the United Nations.";
+			stats = "\n\nTech: +0.3\nFood: +0.7\nEnvironment: +0.3\nPeace: +1.6\nLove: +1.1";
+		} else if(factor == FACTORS.BAN_ON_ALCOHOL) {
+			icon = new Texture(Gdx.files.internal("textures/icons/alcohol_ban.png"));
+			title = "Ban on Alcohol";
+			desc = "The number of accidents caused by drunk driving is astonishing. However the American period of prohibition proves that an out right ban on alcohol will not fly with the people who will start smugling it.";
+			stats = "\n\nHealth: +1.1\nEnvironment: +0.3\nVodka: -5.2\nPeace: -0.5\nLaw: -0.7";
+		} else if(factor == FACTORS.BAN_ON_DRUGS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/drug_ban.png"));
+			title = "Ban on Drugs";
+			desc = "The adversive effect of drugs on our bodies is well known. Every year thousands of people die due to overdose. On top of that, drugs are often the biggest source of funding for terrorist organizations.";
+			stats = "\n\nHealth: +1.7\nEnvironment: +0.3\nVodka: -0.1\nPeace: -0.5\nLaw: -0.9";
+		} else if(factor == FACTORS.MEDICAL_RESEARCH) {
+			icon = new Texture(Gdx.files.internal("textures/icons/health.png"));
+			title = "Medical Research";
+			desc = "Right now we're at the point where a well maintained body could easily live to be 140 years old. That number seems big when comparing to an average lifespan of 30 years in the past centry. But we can do better.";
+			stats = "\n\nHealth: +1.7\nEnvironment: +0.8\nPeace: +0.5\nEducation: +2.5\nSpace: +0.75";
+		} else if(factor == FACTORS.FISHING_QUOTAS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/fishing.png"));
+			title = "Fishing Quotas";
+			desc = "Overfishing is an increasing problem. A disbalance in the ocean will soon lead to extinction of certain species of fish. On the other hand, developing countries need to fish to keep up with their food demand.";
+			stats = "\n\nFood: -0.2\nEnvironment: +1.5\nJobs: -0.7\nPeace: -0.3";
+		} else if(factor == FACTORS.ANIMAL_PROTECTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/deer.png"));
+			title = "Animal Protection Laws";
+			desc = "Endangered species will not survive without safe heavens in the forms of national parks and wildlife refugees and reserves. We can't save every single bug or rodent, but we can save the lions.";
+			stats = "\n\nEnvironment: +0.8\nPeace: +0.5\nLove: +0.6";
+		} else if(factor == FACTORS.INFO_FREEDOM) {
+			icon = new Texture(Gdx.files.internal("textures/icons/press.png"));
+			title = "Freedom of Press and Information";
+			desc = "The Internet proves that no government is able to completely suppress the flow of information. There were many events in the recent history where malitias of people connected through Facebook and overthrown a dictator.";
+			stats = "\n\nTech: +1.3\nEducation: +1.3\nLaw: +0.7\nPeace: +1.5";
+		} else if(factor == FACTORS.MINIMUM_WAGE) {
+			icon = new Texture(Gdx.files.internal("textures/icons/coins.png"));
+			title = "Minimum Wage";
+			desc = "The concept of a minimum wage has been fought for by many generations of workers in almost all countries. Picking a particular figure is hard through many factors that will affect the economy and the job market when a minimum wage is imposed.";
+			stats = "\n\nHealth: +0.95\nJobs: -0.5\nPeace: +0.3";
+		} else if(factor == FACTORS.GENEVA_CONVENTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/geneva.png"));
+			title = "Geneva Convention";
+			desc = "The Geneva Convention established an important framework of treatment of prisoners of war, civilians, medics and other personel involved in a war. It is enforced by the United Nations.";
+			stats = "\n\nLaw: +1.2\nPeace: +3.1";
+		} else if(factor == FACTORS.BAN_ON_SMOKING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/smoking_ban.png"));
+			title = "Ban on Smoking";
+			desc = "Unhealthy behaviors that ruin population's health seem to be a good target for a ban. Unfortunatelly smoking has been a part of our culture for a long time and an outright ban will make people angry.";
+			stats = "\n\nHealth: +1.83\nEnvironment: +1.2\nDrugs: -0.13\nPeace: -0.8\nLove: -1.03";
+		} else if(factor == FACTORS.CONFORMITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/conformity.png"));
+			title = "Conformity";
+			desc = "A conformist society that follows every rule and is rather similar in all countries tends to follow the law more diligently. However that spares room for creativity and amazing forms of human expression.";
+			stats = "\n\nEducation: -1.03\nLove: -1.33\nPeace: +1.03\nLaw: +1.03\nVodka: +1.03";
+		} else if(factor == FACTORS.DIVERSITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/people.png"));
+			title = "Diversity";
+			desc = "Encouraging diversity promotes exchange of ideas and cultures. It is why you can eat Chicken Teriyaki in American and Pizza in Sweden. A mesh of cultures and religions however may cause tensions.";
+			stats = "\n\nEducation: +1.3\nLove: +3.0\nPeace: +3.3\nLaw: -1.1\nSpace: +0.5";
+		} else if(factor == FACTORS.GENDER_EQUALITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/gender.png"));
+			title = "Gender Equality";
+			desc = "The rights of woman are still violated around the world. The right to vote, drive a car, have a fair trial or earn equal pay is essential to reaching equality, at least in the light of the law.";
+			stats = "\n\nEducation: +0.3\nLove; +6.0\nPeace: +1.3\nHealth: +0.3\nJobs: +0.76";
+		} else if(factor == FACTORS.MARRIAGE_EQUALITY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/marriage.png"));
+			title = "Marriage Equality";
+			desc = "In the recent years the rights of LGBTQ+ communities have been slowly increasing. It's important to keep this trend and allow everyone to live a happy life however they want to do it.";
+			stats = "\n\nEducation: +0.3\nLove: +6.0\nPeace: +2.0\nHealth: +0.1";
+		} else if(factor == FACTORS.CIA_PRISONS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/handcuffs.png"));
+			title = "Secret CIA Prisons";
+			desc = "Some countries stand forward in the mission to protect the world from terrorism. United States' actions in the Middle East have been doing just that but also destabilizing the region. Decision must be made whether to allow it or not.";
+			stats = "\n\nLaw: +1.3\nPeace: -0.8";
+		} else if(factor == FACTORS.POPULATION_TRACKING) {
+			icon = new Texture(Gdx.files.internal("textures/icons/gps.png"));
+			title = "Population Tracking";
+			desc = "20 years ago nobody would thought that we can force every human to carry a GPS device capable of tracking them. Right now everyone has a smartphone in their pocket. Do we want to keep a track of everyone?";
+			stats = "\n\nLaw: +1.3\nPeace: -1.2\nLove: -0.5";
+		} else if(factor == FACTORS.CCTV) {
+			icon = new Texture(Gdx.files.internal("textures/icons/cctv.png"));
+			title = "CCTV";
+			desc = "London is an excelent example of population control through Close Circuit Television. Many criminals have been convicted through the evidence from those cameras.";
+			stats = "\n\nLaw: +2.1\nPeace: -1.2\nLove: -2.5";
+		} else if(factor == FACTORS.ALCOHOL_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/alcohol_tax.png"));
+			title = "Alcohol Tax";
+			desc = "Taxing the sell and consumption of alcohol might a better idea than banning it. However, as we've seen with ciggarets, even extremely high taxes don't prevent people from using it. This might be a good economy boost.";
+			stats = "\n\nHealth: +0.8\nEnvironment: +0.3\nJobs: +0.51\nLaw: -0.81\nPeace: -0.9";
+		} else if(factor == FACTORS.CORPORATION_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/corp_tax.png"));
+			title = "Corporation Tax";
+			desc = "Companies that make millions of dollars of revenue every year are a good target to squeeze some money into the economy. However large taxes force companies to move their business to other places. A world-wide tax might slow down business entirely.";
+			stats = "\n\nTech: -0.9\nEnvironment: +0.1\nEducation: -0.3\nJobs: -1.6\nEnergy: -0.2";
+		} else if(factor == FACTORS.PROPERTY_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/house.png"));
+			title = "Property Tax";
+			desc = "Taxing people on their homes is an accepted practice that pays for local utilities such as snow plowing, fire departments, hospitals and the police force. Without it the local economies might crumble.";
+			stats = "\n\nEnvironment: +0.6\nEducation: +0.1\nJobs: +0.6\nEnergy: +0.2";
+		} else if(factor == FACTORS.HIGH_UNEMPLOYMENT) {
+			icon = new Texture(Gdx.files.internal("textures/icons/unemployment.png"));
+			title = "High Unemployment Rates";
+			desc = "The American Great Depression proves that without jobs the economy shuts down and the society is swept by huge crime ways. Keeping people at work should be one of the priorities of any world leader.";
+			stats = "\n\nHealth: -1.1\nSpace: -2.1\nEducation: -1.3\nInfrastructure: -1.4\nJobs: -5.32\nPeace: -2.3";
+		} else if(factor == FACTORS.UTILITY_TAX) {
+			icon = new Texture(Gdx.files.internal("textures/icons/utility.png"));
+			title = "Utility Tax";
+			desc = "With a growing population the strain put on our infrastructure is getting bigger. It's important to finance the utilities sector properly to have roads without potholes, bridges that don't collapse below you and constant source of power pumped to your house.";
+			stats = "\n\nHealht: +1.1\nJobs: +0.65\nEnvironment: +0.93\nInfrastructure: +3.3\nEnergy: -0.3";
+		} else if(factor == FACTORS.OPEN_TRADE) {
+			icon = new Texture(Gdx.files.internal("textures/icons/ship.png"));
+			title = "Open Trade";
+			desc = "As in the case of Global Police and the United Nations, collaboration and trade between nations is important. It fuels economies and promotes faster development of new technologies.";
+			stats = "\n\nJobs: +1.25\nInfrastructure: +1.3\nEnergy: +0.62\nSpace: +1.3\nDrugs: +2.1";
+		} else if(factor == FACTORS.RENEWABLE_ENERGY) {
+			icon = new Texture(Gdx.files.internal("textures/icons/wind.png"));
+			title = "Renewable Energy";
+			desc = "Fossil fuels have been polluting the Earth since the Industrial Revolution, increasing the amount of Carbon Dioxide in the atmosphere. Acid rain and nuclear waste is also a big problem. Solar, wind and hydro power are a great alternative to those.";
+			stats = "\n\nEnergy: +3.22\nJobs: +1.03\nInfrastructure: +2.34\nInternet Access: +3.1\nVodka: +0.53";
+		} else if(factor == FACTORS.SEWER_TREATMENT) {
+			icon = new Texture(Gdx.files.internal("textures/icons/shit.png"));
+			title = "Sewer Treatment Facilities";
+			desc = "Investing money into cleaning up our mess is a no brainer. The Yellow River in China is an example of how industrial and civil discharge into our water basins and rivers can render 1/3 of that beautiful river unusable.";
+			stats = "\n\nHealth: +0.73\nFood: +0.53\nEnergy: +0.52\nInfrastructure: +0.51\nPeace: +0.86";
+		} else if(factor == FACTORS.EPIDEMICS) {
+			icon = new Texture(Gdx.files.internal("textures/icons/deead.png"));
+			title = "Epidemics";
+			desc = "As Christopher Columbs and his crew proved after arriving to the \"New World\", epidemics are extremely dangerous an can wipe societies clean. Without proper preventative methods and vaccination, we would be doomed.";
+			stats = "\n\nHealth: -4.52\nFood: -2.52\nPeace: -1.83\nDrug: +1.2\nLaw: -0.52\nVodka: -0.3";
+		} else if(factor == FACTORS.DISASTER_PREVENTION) {
+			icon = new Texture(Gdx.files.internal("textures/icons/disaster.png"));
+			title = "Disaster Prevention";
+			desc = "George Carlin (RIP), one of the best comedians to ever live once said \"the planet’ll shake us off like a bad case of fleas\". We must realize the power of Mother Nature and protect ourselve from its deadly forces.";
+			stats = "\n\nInfrastructure: +2.4\nTechnology: +1.2\nInternet Access: +1.4";
+		} else {
+			icon = new Texture(Gdx.files.internal("textures/icons/people.png"));
+			title = "";
+			desc = "";
+			stats = "\n\n";
+		}
+		
+		image = new Image(icon);
+		
+		this.hoverTexture = hoverTexture;
+	}
+	
+	public void update(float tick, float rollingSpeed) {
+		super.update(tick);
+
+		if(type == TYPE.OUTER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 550);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 280);
+		} else if(type == TYPE.MIDDLE) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 340);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 180);
+		} else if(type == TYPE.INNER) {
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 130);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 100);
+		}
+		
+		rolling = (rollingSpeed > GameWorld.ROLLING_LIMIT);
+	}
+	
+	@Override
+	public void render(Batch batch) {
+		if(isCurrent && !rolling) {
+			batch.draw(hoverTexture, x, y, 96, 96);
+			batch.draw(icon, x+18, y+16, 54, 54);
+		} else {
+			batch.draw(texture, x, y, 80, 80);
+			batch.draw(icon, x+12, y+15, 54, 54);
+		}
+		if(isAffective) {
+			this.world.font.setColor(new Color(0.0f, 0.7f, 0f, 1f));
+			this.world.font.draw(batch, "v", x+64, y+73);
+		} else {
+			this.world.font.setColor(new Color(0.8f, 0.0f, 0f, 1f));
+			this.world.font.draw(batch, "x", x+64, y+73);
+		}
+		
+		this.world.font.setColor(new Color(0.1f, 0.42f, 0.78f, 1f)); // Buttons' font
+	}
+	
+	public void toggle(boolean tog) {
+		isCurrent = tog;
+	}
+	
+	public void toggle() {
+		isCurrent = !isCurrent;
+	}
+	
+	public void toggleAffect(boolean tog) {
+		isAffective = tog;
+	}
+	
+	public void toggleAffect() {
+		isAffective = !isAffective;
+	}
+
+	public boolean isCurrent() {
+		return isCurrent;
+	}
+
+	public void setCurrent(boolean isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+
+	public boolean isAffective() {
+		return isAffective;
+	}
+
+	public void setAffective(boolean isAffective) {
+		this.isAffective = isAffective;
+	}
+
+	public Texture getHoverTexture() {
+		return hoverTexture;
+	}
+
+	public void setHoverTexture(Texture hoverTexture) {
+		this.hoverTexture = hoverTexture;
+	}
+
+	public Texture getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Texture icon) {
+		this.icon = icon;
+	}
+
+	public FACTORS getFactor() {
+		return factor;
+	}
+
+	public void setFactor(FACTORS factor) {
+		this.factor = factor;
+	}
+
+	public boolean isRolling() {
+		return rolling;
+	}
+
+	public void setRolling(boolean rolling) {
+		this.rolling = rolling;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getStats() {
+		return stats;
+	}
+
+	public void setStats(String stats) {
+		this.stats = stats;
+	}
+	
+}

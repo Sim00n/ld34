@@ -1,0 +1,12 @@
+package com.puzdrowski.decision;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
+
+public final class ColorTrick {
+		
+	public static final char DEF = BitmapFontCache;
+	public static final char WHITE = addColorChar(Color.WHITE);
+	public static final char BLACK = addColorChar(Color.BLACK);
+	
+}

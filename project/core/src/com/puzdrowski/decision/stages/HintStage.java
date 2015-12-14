@@ -3,7 +3,6 @@ package com.puzdrowski.decision.stages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,7 +15,6 @@ import com.puzdrowski.decision.entity.FactorEntity;
 public class HintStage extends StageWrapper {
 
 	private Window window;
-	private HorizontalGroup hz;
 	private Label text;
 	private Label stats;
 	private Image image;
@@ -31,12 +29,12 @@ public class HintStage extends StageWrapper {
 		window.getTitleLabel().setText(fe.getTitle());
 		image.setDrawable(new SpriteDrawable(new Sprite(fe.getIcon())));
 		image.setScale(0.8f);
-		image.setPosition(15f, 0);
+		image.setX(15f);
 		text.setText("\n"+fe.getDesc());
 		if(fe.isAffective()) {
-			stats.setText(fe.getStats());
+			stats.setText(fe.getStats()+"\n\n");
 		} else {
-			stats.setText("\n"+fe.getStats().replaceAll("\\-", "").replaceAll("\\+", "-"));
+			stats.setText(fe.getStats().replaceAll("\\-", "").replaceAll("\\+", "-")+"\n\n");
 		}
 	}
 	
@@ -55,34 +53,26 @@ public class HintStage extends StageWrapper {
 		
 		window = new Window("Hint", skin);
 		window.setSize(700, 200);
-		window.align(Align.top);
 		window.setScale(0.8f);
 		
 		image = new Image(new Texture(Gdx.files.internal("textures/icons/police.png")));
-		hz = new HorizontalGroup();
-		hz.align(Align.center);
 		
-		Table t = new Table();
-		Table t2 = new Table();
+		Table table = new Table();
 		
 		text = new Label("123", skin);
-		text.setAlignment(Align.center);
 		text.setWrap(true);
-		text.setWidth(300);
-		t.add(text).width(300f);
+		text.setWidth(300f);
+		text.setAlignment(Align.left);
 				
 		stats = new Label("123", skin);
 		stats.setWrap(true);
-		stats.setWidth(200);
-		stats.setAlignment(Align.center);
-		t2.add(stats).width(200f).padLeft(30f);
+		stats.setWidth(200f);
 		
-		hz.align(Align.top);
-		hz.addActor(image);
-		hz.addActor(t);
-		hz.addActor(t2);
+		table.add(image).width(150f);
+		table.add(text).width(350f);
+		table.add(stats).width(200f).padLeft(20f);
 		
-		window.add(hz);
+		window.add(table);
 		stage.addActor(window);
 	}	
 	

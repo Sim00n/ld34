@@ -1,6 +1,7 @@
 package com.puzdrowski.decision.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,6 +10,7 @@ import com.puzdrowski.decision.GameWorld;
 
 public class FactorEntity extends Entity {
 
+	private GameWorld world;
 	private boolean isCurrent;
 	private boolean isAffective;
 	private Texture hoverTexture;
@@ -32,8 +34,9 @@ public class FactorEntity extends Entity {
 		OPEN_TRADE, RENEWABLE_ENERGY, SEWER_TREATMENT, EPIDEMICS, DISASTER_PREVENTION
 	};
 	
-	public FactorEntity(Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor, boolean active) {
+	public FactorEntity(GameWorld world, Texture texture, Texture hoverTexture, float theta, TYPE type, int i, FACTORS factor, boolean active) {
 		super(texture, theta, type, i);
+		this.world = world;
 		this.factor = factor;
 		this.isCurrent = false;
 		this.isAffective = active;
@@ -255,14 +258,14 @@ public class FactorEntity extends Entity {
 		super.update(tick);
 
 		if(type == TYPE.OUTER) {
-			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 550);
-			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 280);
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order + rollingSpeed)) * 550);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order + rollingSpeed)) * 280);
 		} else if(type == TYPE.MIDDLE) {
 			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 340);
 			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 180);
 		} else if(type == TYPE.INNER) {
-			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order - rollingSpeed)) * 130);
-			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order - rollingSpeed)) * 100);
+			x = (int) (Game.WIDTH/2 - 40 + Math.cos(Math.toRadians(theta * order + rollingSpeed)) * 130);
+			y = (int) (Game.HEIGHT/2 - 100 + Math.sin(Math.toRadians(theta * order + rollingSpeed)) * 100);
 		}
 		
 		rolling = (rollingSpeed > GameWorld.ROLLING_LIMIT);
@@ -272,11 +275,20 @@ public class FactorEntity extends Entity {
 	public void render(Batch batch) {
 		if(isCurrent && !rolling) {
 			batch.draw(hoverTexture, x, y, 96, 96);
-			batch.draw(icon, x+18, y+16, 54, 54);
+			batch.draw(icon, x+12, y+15, 54, 54);
 		} else {
 			batch.draw(texture, x, y, 80, 80);
 			batch.draw(icon, x+12, y+15, 54, 54);
 		}
+		if(isAffective) {
+			this.world.font.setColor(new Color(0.0f, 0.7f, 0f, 1f));
+			this.world.font.draw(batch, "v", x+64, y+73);
+		} else {
+			this.world.font.setColor(new Color(0.8f, 0.0f, 0f, 1f));
+			this.world.font.draw(batch, "x", x+64, y+73);
+		}
+		
+		this.world.font.setColor(new Color(0.1f, 0.42f, 0.78f, 1f)); // Buttons' font
 	}
 	
 	public void toggle(boolean tog) {

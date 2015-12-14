@@ -1,0 +1,144 @@
+package com.puzdrowski.decision.stages;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.puzdrowski.decision.Game;
+import com.puzdrowski.decision.GameWorld;
+import com.puzdrowski.decision.Metrics;
+
+public class WinStage extends StageWrapper {
+
+	private GameWorld world;
+	private Window window;
+	private Label message, stats1, stats2, stats3;
+	private Button contButton;
+	
+	public WinStage(Game game, GameWorld world) {
+		super(game);
+		this.world = world;
+	}
+	
+	public void updateData() {
+		if(Metrics.HAPPINESS >= 100f && Metrics.HUNGER <= 0f && Metrics.WAR <= 0f) {
+			// thriving
+			String s = "";
+			s += "Under your rule the world is thriving. Through smart planning and proper socio-economic policies, all children around the\n";
+			s += "world will eat dinner today. They will drink clean, safe water and their parents will not spare a meal to satisfy their kids.\n";
+			s += "There will be no mothers and wifes crying after the deaths of their sons, daughters and husbands. Everyone will be satisfied,\n";
+			s += "at least spiritualy.\nYou are a God!";
+			message.setText(s);
+		}
+		if(Metrics.HAPPINESS <= 0f && Metrics.HUNGER >= 0f && Metrics.WAR >= 0f) {
+			String s = "";
+			s += "Under your rule the world is completely destroyed. Through a combination of bad social and economic policies children and\n";
+			s += "their parents around the world won't eat a dinner today and will most likely starve in the next few months. Poor conditions,\n";
+			s += "bad environmental policies and lack of proper facilities led drinking water to reach the price of petroleum. Most young men\n";
+			s += "died in wars and their families will follow. The world is an utter mess and it doesn't seem to be getting better. There are\n";
+			s += "no hints of happines on people's faces.\nYou've become the biblical Satan!";
+			message.setText(s);
+		}
+		
+		String skills = "";
+		skills += "Health: " + Metrics.HEALTH + "%\n";
+		skills += "Food: " + Metrics.FOOD + "%\n";
+		skills += "Technology: " + Metrics.TECH + "%\n";
+		skills += "Environment: " + Metrics.ENV + "%\n";
+		skills += "Space Exploration: " + Metrics.SPACE + "%\n";
+		skills += "\nHunger: " + Metrics.HUNGER + "%";
+		stats1.setText(skills);
+		
+		skills = "";
+		skills += "Drugs: " + Metrics.DRUG + "%\n";
+		skills += "Education: " + Metrics.EDUCATION + "%\n";
+		skills += "Jobs: " + Metrics.JOBS + "%\n";
+		skills += "Infrastructure: " + Metrics.INFRASTRUCTURE + "%\n";
+		skills += "Vodka: " + Metrics.VODKA + "%\n";
+		skills += "\nWars: " + Metrics.WAR + "%";
+		stats2.setText(skills);
+		
+		skills = "";
+		skills += "Internet Access: " + Metrics.WIFI + "%\n";
+		skills += "Energy Availability: " + Metrics.ENERGY + "%\n";
+		skills += "Rule of Law: " + Metrics.LAW + "%\n";
+		skills += "Peace: " + Metrics.PEACE + "%\n";
+		skills += "Love: " + Metrics.LOVE + "%\n";
+		skills += "\nHappiness: " + Metrics.HAPPINESS + "%";
+		stats3.setText(skills);
+		
+		Gdx.input.setInputProcessor(stage);
+	}
+	
+	@Override
+	public void elements() {
+		super.elements();
+		
+		window = new Window("Congratulations! You've won!", skin);
+		window.setSize(1000f, 400f);
+		window.setPosition(Game.WIDTH / 2 - 500, Game.HEIGHT / 2 - 200);
+		
+		Table table = new Table();
+		table.setWidth(900f);
+		
+		message = new Label("test\n\n", skin);
+		stats1 = new Label("test2\n\ntest2", skin);
+		stats2 = new Label("test3\n\ntest3", skin);
+		stats3 = new Label("test3\n\ntest3", skin);
+
+		message.setWidth(900f);
+		
+		stats1.setWidth(300f);
+		stats1.setWrap(true);
+		stats2.setWidth(300f);
+		stats2.setWrap(true);
+		stats3.setWidth(300f);
+		stats3.setWrap(true);
+		
+		contButton = new TextButton("Continue playing", skin);
+
+		table.add(message).width(900f).colspan(3);
+		table.row().padTop(30f);
+		table.add(stats1).width(300f);
+		table.add(stats2).width(300f);
+		table.add(stats3).width(300f);
+		table.row().padTop(30f).colspan(3);
+		table.add(contButton);
+		
+		window.add(table);
+		stage.addActor(window);
+		
+		listeners();
+	}
+	
+	@Override
+	public void render() {
+		stage.draw();
+	}
+	
+	public void listeners() {
+		contButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				world.button_sound.play();
+				world.contPlaying = true;
+				world.screen = GameWorld.SCREEN.GAME;
+				Gdx.input.setInputProcessor(game.ip);
+			}
+		});
+	}
+	
+}
+
+
+
+
+
+
+
+
+
